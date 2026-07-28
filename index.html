@@ -4,161 +4,137 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta name="theme-color" content="#0D9488" />
-<meta name="color-scheme" content="light" />
 <title>Tmap Gmail</title>
 <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#F8FAFC;--card:#fff;--primary:#0D9488;--primary-l:#14B8A6;--primary-bg:#ECFDF5;
+  --bg:#F0FDFA;--card:#fff;--primary:#0D9488;--primary-l:#14B8A6;--primary-bg:#CCFBF1;
   --accent:#F97316;--accent-bg:#FFF7ED;--red:#EF4444;--red-bg:#FEF2F2;
-  --text:#0F172A;--text2:#64748B;--text3:#94A3B8;
-  --border:#E2E8F0;--b2:#CBD5E1;
-  --r:14px;--rs:10px;--sh:0 1px 2px rgba(0,0,0,0.04),0 1px 4px rgba(0,0,0,0.06);
-  --sh-h:0 4px 12px rgba(0,0,0,0.08);
-  --font:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+  --text:#134E4A;--text2:#5B8B89;--text3:#94A3B8;
+  --border:#D1FAE5;--b2:#A7F3D0;
+  --r:16px;--rs:10px;--font:'DM Sans',system-ui,-apple-system,sans-serif;
 }
 html{height:100%}
-body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 24px 0}
+body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 32px 0}
+::selection{background:var(--primary);color:#fff}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px}
 
 /* LAYOUT */
-.c{max-width:480px;margin:0 auto;padding:0 16px}
+.w{max-width:480px;margin:0 auto;padding:0 18px}
 
 /* HEADER */
-.hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
-.hd-l{display:flex;align-items:center;gap:8px}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.hd-l{display:flex;align-items:center;gap:10px}
 .hd-b{background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.3px}
-.hd-t{font-size:17px;font-weight:700;color:var(--text)}
-.hd-r{background:none;border:none;color:var(--text2);padding:6px;border-radius:var(--rs);cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center}
+.hd-t{font-size:17px;font-weight:600;color:var(--text)}
+.hd-r{background:none;border:none;color:var(--text2);padding:6px;border-radius:var(--rs);cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .hd-r:hover{background:var(--bg)}
 
-/* CARDS */
-.card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:14px}
-.card-s{background:var(--card);border-radius:var(--rs);padding:14px 16px;box-shadow:var(--sh);margin-bottom:10px}
-
-/* PROFILE CARD */
-.pf{display:flex;align-items:center;gap:14px}
-.pf-av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-l));flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700}
-.pf-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.pf-n{font-size:17px;font-weight:700}
-.pf-u{font-size:13px;color:var(--text2);margin-top:1px}
-.pf-p{display:inline-block;font-size:10px;font-weight:600;padding:2px 10px;border-radius:10px;margin-top:4px;background:linear-gradient(135deg,#FCD34D,#F59E0B);color:#fff}
-
-/* STATS ROW */
-.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.sb{text-align:center;padding:14px 8px}
-.sb-n{display:block;font-size:24px;font-weight:700;color:var(--primary)}
-.sb-l{display:block;font-size:11px;color:var(--text2);margin-top:2px;font-weight:500}
-
-/* SECTION HEADER */
-.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.sh h2{font-size:15px;font-weight:700;color:var(--text)}
-.sh-r{display:flex;gap:6px;align-items:center}
+/* CARD */
+.card{background:var(--card);border-radius:var(--r);padding:20px;margin-bottom:14px}
 
 /* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border-radius:var(--rs);transition:all .12s;white-space:nowrap}
-.btn:hover{background:var(--bg);border-color:var(--b2);box-shadow:var(--sh)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-weight:600;cursor:pointer;border:none;border-radius:var(--rs);transition:all .12s;white-space:nowrap}
 .btn:active{transform:scale(.97)}
-.btn-p{background:var(--primary);color:#fff;border-color:var(--primary)}
-.btn-p:hover{background:var(--primary-l);border-color:var(--primary-l)}
-.btn-o{background:var(--accent);color:#fff;border-color:var(--accent)}
-.btn-o:hover{opacity:.9}
-.btn-d{color:var(--red);border-color:var(--red)}
+.btn-p{background:var(--primary);color:#fff;padding:14px 28px;font-size:15px;border-radius:12px}
+.btn-p:hover{background:var(--primary-l)}
+.btn-p svg{stroke:#fff;width:20px;height:20px}
+.btn-s{background:var(--card);color:var(--text);padding:8px 16px;font-size:13px;border:1px solid var(--border)}
+.btn-s:hover{background:var(--bg);border-color:var(--b2)}
+.btn-xs{padding:5px 10px;font-size:11px;border-radius:6px}
+.btn-d{color:var(--red);border:1px solid var(--red);background:var(--card)}
 .btn-d:hover{background:var(--red);color:#fff}
-.btn-s{padding:6px 14px;font-size:12px}
-.btn-xs{padding:4px 10px;font-size:11px}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* INPUTS */
-.inp{background:var(--card);color:var(--text);border:1px solid var(--border);padding:10px 14px;font-family:inherit;font-size:14px;width:100%;outline:none;border-radius:var(--rs);transition:border .12s}
-.inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,148,136,.1)}
-.inp::placeholder{color:var(--text3)}
-.sel{background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 12px;font-family:inherit;font-size:13px;cursor:pointer;outline:none;border-radius:var(--rs);width:100%}
-.sel:focus{border-color:var(--primary)}
+/* HERO */
+.hero{text-align:center;padding:24px 0 8px}
+.hero h1{font-size:20px;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
+.hero p{font-size:14px;color:var(--text2);font-weight:400;margin-bottom:20px}
 
-/* EMAIL CHIPS */
-.ec{display:flex;flex-wrap:wrap;gap:8px}
-.ec-c{display:inline-flex;align-items:center;gap:6px;background:var(--primary-bg);color:var(--primary);border-radius:20px;padding:6px 12px 6px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;border:1.5px solid transparent}
-.ec-c:hover{border-color:var(--primary)}
-.ec-c.act{border-color:var(--primary);background:var(--primary);color:#fff}
-.ec-c.act svg{stroke:#fff}
-.ec-x{background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;border-radius:50%;color:inherit;opacity:.7}
-.ec-x:hover{opacity:1}
-.ec-a{display:inline-flex;align-items:center;gap:6px;background:var(--bg);color:var(--text2);border:1.5px dashed var(--border);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s}
-.ec-a:hover{border-color:var(--b2);color:var(--text)}
+/* ALIAS CHIPS */
+.ac{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.ac-i{display:inline-flex;align-items:center;gap:6px;background:var(--primary-bg);color:var(--primary);border-radius:20px;padding:7px 12px 7px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;border:1.5px solid transparent}
+.ac-i:hover{border-color:var(--primary);background:var(--card)}
+.ac-i.act{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ac-i.act svg{stroke:#fff}
+.ac-x{background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;border-radius:50%;color:inherit;opacity:.6;transition:opacity .12s}
+.ac-x:hover{opacity:1}
+.ac-a{display:inline-flex;align-items:center;gap:6px;border:1.5px dashed var(--b2);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .12s;color:var(--text2);background:transparent}
+.ac-a:hover{border-color:var(--primary);color:var(--primary)}
 
 /* TABS */
-.tr{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:var(--r);margin-bottom:16px}
-.tb{flex:1;padding:8px 12px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:none;border-radius:var(--rs);background:transparent;color:var(--text2);transition:all .12s}
-.tb.on{background:var(--card);color:var(--primary);box-shadow:var(--sh)}
+.tr{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:16px}
+.tb{flex:1;padding:8px 12px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;border:none;border-radius:8px;background:transparent;color:var(--text2);transition:all .12s}
+.tb.on{background:var(--card);color:var(--primary);box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .tv{display:none}
 .tv.on{display:block}
 
-/* INBOX */
-.ix-b{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;font-weight:600;color:var(--text2)}
-.ix-p{display:flex;align-items:center;gap:8px}
-.ix-l{display:flex;flex-direction:column;gap:8px}
-.ms{background:var(--card);border-radius:var(--rs);padding:14px 16px;box-shadow:var(--sh);cursor:pointer;transition:all .12s;border:1px solid transparent}
-.ms:hover{box-shadow:var(--sh-h);border-color:var(--border)}
-.ms-s{font-size:14px;font-weight:600;margin-bottom:4px}
-.ms-f{font-size:12px;color:var(--text2)}
-.ms-sn{font-size:12px;color:var(--text3);margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sr-b{display:flex;gap:8px;margin-bottom:14px}
-.sr-b .inp{flex:1}
-
-/* GENERATE */
-.ge{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
-.gc{background:var(--card);border-radius:var(--r);padding:18px 10px;text-align:center;cursor:pointer;border:1px solid var(--border);font-family:inherit;transition:all .12s;box-shadow:var(--sh)}
-.gc:hover{box-shadow:var(--sh-h);border-color:var(--primary);transform:translateY(-1px)}
-.gc-i{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-l));margin:0 auto 8px;color:#fff}
-.gc-l{display:block;font-size:13px;font-weight:600;margin-bottom:2px}
-.gc-d{display:block;font-size:11px;color:var(--text3)}
-.gc.c{display:flex;align-items:center;gap:12px;text-align:left;padding:14px 16px;width:100%;margin-bottom:12px}
+/* TAB: GENERATE */
+.ge{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gc{padding:18px 8px;text-align:center;cursor:pointer;background:var(--card);border:1px solid var(--border);border-radius:12px;font-family:var(--font);transition:all .12s}
+.gc:hover{border-color:var(--primary);box-shadow:0 2px 8px rgba(13,148,136,.08)}
+.gc-i{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-l));margin:0 auto 8px;color:#fff}
+.gc-l{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
+.gc-d{display:block;font-size:10px;color:var(--text3);font-weight:400}
+.gc.c{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 16px;width:100%;margin-top:10px}
 .gc.c .gc-i{margin:0;flex-shrink:0}
-.gc.c .gc-l{margin-bottom:0}
-#gr pre{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-family:'SF Mono',Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;margin-top:8px}
+#gr{display:none;margin-top:16px}
+#gr pre{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-family:'SF Mono',Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;margin-top:8px;color:var(--text)}
 
-/* SETTINGS */
-.sg .si{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:12px;border-bottom:1px solid var(--border)}
+/* MESSAGE LIST */
+.ml{display:flex;flex-direction:column;gap:8px}
+.ms{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .12s}
+.ms:active{transform:scale(.99)}
+.ms-s{font-size:14px;font-weight:600;margin-bottom:4px}
+.ms-f{font-size:12px;color:var(--text2);font-weight:400}
+.ms-sn{font-size:12px;color:var(--text3);margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:400}
+.sr-b{display:flex;gap:8px}
+.sr-b input{flex:1;background:var(--card);color:var(--text);border:1px solid var(--border);padding:10px 14px;font-family:var(--font);font-size:13px;outline:none;border-radius:var(--rs);transition:border .12s}
+.sr-b input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,148,136,.1)}
+.sr-b input::placeholder{color:var(--text3)}
+
+/* EMPTY */
+.em{padding:32px 16px;text-align:center;color:var(--text3);font-size:13px;font-weight:500}
+.em-i{display:flex;justify-content:center;margin-bottom:10px}
+
+/* SETTINGS ROW */
+.sg .si{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
 .sg .si:last-child{border-bottom:none}
-.si-l{font-size:13px;font-weight:600;flex-shrink:0}
-.si-v{font-size:12px;color:var(--text2);text-align:right;word-break:break-all}
-
-/* EMPTY STATE */
-.em{text-align:center;padding:32px 16px;color:var(--text3);font-size:13px;font-weight:500}
-.em-i{margin-bottom:10px;display:flex;justify-content:center}
+.si-l{font-weight:500;color:var(--text2)}
+.si-v{color:var(--text);font-weight:500;text-align:right}
 
 /* TOAST */
-#ts{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 22px;border-radius:var(--r);font-size:13px;font-weight:600;z-index:9999;white-space:nowrap;transition:opacity .2s;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+#ts{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#134E4A;color:#fff;padding:10px 22px;border-radius:14px;font-size:13px;font-weight:600;z-index:9999;white-space:nowrap;transition:opacity .2s;box-shadow:0 4px 20px rgba(0,0,0,.12)}
 #ts.h{opacity:0;pointer-events:none}
 
 /* MODAL */
-#mo{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;backdrop-filter:blur(4px)}
+#mo{position:fixed;inset:0;background:rgba(15,23,42,.4);display:flex;align-items:center;justify-content:center;z-index:999;padding:24px;backdrop-filter:blur(6px)}
 #mo.h{display:none}
-#mo-b{width:100%;max-width:400px;max-height:85vh;background:var(--card);border-radius:var(--r);box-shadow:0 20px 60px rgba(0,0,0,.12);display:flex;flex-direction:column}
+#mo-b{width:100%;max-width:400px;max-height:85vh;background:var(--card);border-radius:var(--r);box-shadow:0 25px 60px rgba(0,0,0,.15);display:flex;flex-direction:column}
 #mo-h{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
 #mo-t{font-size:16px;font-weight:700}
-#mo-x{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:var(--rs);width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+#mo-x{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:6px;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
 #mo-x:hover{background:var(--bg);color:var(--text)}
 #mo-bd{padding:20px;overflow-y:auto;font-size:14px;color:var(--text2);line-height:1.6}
 #mo-bd h3{font-size:15px;font-weight:700;color:var(--text);margin:0 0 8px}
 #mo-bd p{margin-bottom:12px}
-#mo-bd code{background:var(--bg);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--primary);font-weight:600}
+#mo-bd code{background:var(--primary-bg);padding:2px 8px;border-radius:4px;font-size:13px;color:var(--primary);font-weight:600}
 #mo-bd pre{background:var(--bg);padding:12px;border-radius:var(--rs);font-size:12px;margin:12px 0;overflow-x:auto;font-family:'SF Mono',Consolas,monospace}
 #mo-f{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
 
-/* NOTICE */
-.notice{display:flex;align-items:flex-start;gap:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;font-size:12px;color:#92400E;line-height:1.5}
-.notice svg{flex-shrink:0;margin-top:1px}
+/* MANUAL INPUT */
+.manual{display:flex;gap:8px;margin-top:10px}
+.manual input{flex:1;background:var(--card);color:var(--text);border:1.5px dashed var(--b2);padding:10px 14px;font-family:var(--font);font-size:13px;outline:none;border-radius:20px;transition:border .12s}
+.manual input:focus{border-color:var(--primary);border-style:solid}
+.manual input::placeholder{color:var(--text3);font-weight:400}
 
 @media(max-width:400px){
   .ge{grid-template-columns:1fr}
-  .sr{gap:6px}
-  .sb{padding:10px 6px}
-  .sb-n{font-size:20px}
+  .hero h1{font-size:18px}
 }
 </style>
 </head>
@@ -175,104 +151,85 @@ body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fo
   </button>
 </header>
 
-<main class="c">
+<main class="w">
 
-<!-- PROFILE CARD -->
-<div id="pf" class="card">
-  <div class="pf">
-    <div class="pf-av" id="pf-av">?</div>
-    <div>
-      <div class="pf-n" id="pf-n">Loading...</div>
-      <div class="pf-u" id="pf-u">please wait</div>
-      <div id="pf-p" class="pf-p" style="display:none">&#9733; Premium</div>
+<!-- HERO -->
+<div class="hero">
+  <h1>Temporary Gmail</h1>
+  <p>Generate disposable aliases and manage your inbox</p>
+  <button class="btn btn-p" onclick="gen()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    New Alias
+  </button>
+</div>
+
+<!-- INBOX CARD -->
+<div class="card" id="inbox-card">
+  <!-- ALIASES -->
+  <div id="aliases-sec">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <h2 style="font-size:14px;font-weight:600">Saved Aliases</h2>
     </div>
-  </div>
-</div>
-
-<!-- STATS -->
-<div class="sr">
-  <div class="card sb"><span class="sb-n" id="st-em">0</span><span class="sb-l">Emails</span></div>
-  <div class="card sb"><span class="sb-n" id="st-ms">-</span><span class="sb-l">Messages</span></div>
-  <div class="card sb"><span class="sb-n" id="st-st">-</span><span class="sb-l">Status</span></div>
-</div>
-
-<!-- EMAIL MANAGER -->
-<div class="card">
-  <div class="sh"><h2>Email Addresses</h2><button class="btn btn-xs btn-p" onclick="addEmail()">+ Add</button></div>
-  <div id="ec" class="ec"><div class="em">No emails added yet</div></div>
-</div>
-
-<!-- NOTICE -->
-<div id="notice" class="notice" style="display:none">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-  <span>API password set via Vercel env. No configuration needed.</span>
-</div>
-
-<!-- ACTIVE EMAIL SECTION -->
-<div id="act-sec" style="display:none">
-
-  <div class="tr">
-    <button class="tb on" data-tab="inbox" onclick="swTab(this,'inbox')">Inbox</button>
-    <button class="tb" data-tab="search" onclick="swTab(this,'search')">Search</button>
-    <button class="tb" data-tab="generate" onclick="swTab(this,'generate')">Generate</button>
-  </div>
-
-  <!-- INBOX TAB -->
-  <div id="tv-inbox" class="tv on">
-    <div class="ix-b">
-      <button class="btn btn-xs" onclick="loadInbox()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        Refresh
+    <div id="ac" class="ac"><div class="em">No aliases yet</div></div>
+    <div class="manual">
+      <input id="manual-email" placeholder="Type any email to check..." />
+      <button class="btn btn-xs btn-s" onclick="checkManual()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
-      <span class="ix-p"><span id="ix-pg">Page 1/1</span><button class="btn btn-xs" onclick="pg(-1)">&#8249;</button><button class="btn btn-xs" onclick="pg(1)">&#8250;</button></span>
     </div>
-    <div id="ix-l" class="ix-l"><div class="em">Select an email to view inbox</div></div>
   </div>
 
-  <!-- SEARCH TAB -->
-  <div id="tv-search" class="tv">
-    <div class="sr-b"><input class="inp" id="sq" placeholder="Search messages..." onkeydown="if(event.key==='Enter')doSearch()" /><button class="btn btn-p btn-s" onclick="doSearch()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Search
-    </button></div>
-    <div id="sl"><div class="em">Enter a query to search</div></div>
-  </div>
-
-  <!-- GENERATE TAB -->
-  <div id="tv-generate" class="tv">
-    <div class="ge">
-      <button class="gc" onclick="gen('dot')"><div class="gc-i">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="4" r="1.5"/><circle cx="12" cy="20" r="1.5"/><circle cx="4" cy="12" r="1.5"/><circle cx="20" cy="12" r="1.5"/></svg>
-      </div><span class="gc-l">Dot Trick</span><span class="gc-d">user.name@</span></button>
-      <button class="gc" onclick="gen('plus')"><div class="gc-i">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      </div><span class="gc-l">Plus Alias</span><span class="gc-d">user+tag@</span></button>
-      <button class="gc" onclick="gen('mixed')"><div class="gc-i">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M16 3h5v5M8 21H3v-5M21 3l-7 7M3 21l7-7"/></svg>
-      </div><span class="gc-l">Mixed</span><span class="gc-d">random</span></button>
+  <!-- TABS (shown when alias selected) -->
+  <div id="tabs-sec" style="display:none;margin-top:16px">
+    <div class="tr">
+      <button class="tb on" data-tab="inbox" onclick="swTab(this,'inbox')">Inbox</button>
+      <button class="tb" data-tab="search" onclick="swTab(this,'search')">Search</button>
+      <button class="tb" data-tab="gen" onclick="swTab(this,'gen')">Generate</button>
     </div>
-    <button class="gc c" onclick="customGen()"><div class="gc-i">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-    </div><div><span class="gc-l">Custom</span><span class="gc-d">Enter your own parameters</span></div></button>
-    <div id="gr" style="display:none">
-      <div class="sh" style="margin-top:16px"><h2>Result</h2><button class="btn btn-xs btn-p" onclick="copyRes()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        Copy
+
+    <div id="tv-inbox" class="tv on">
+      <div id="ix-l" class="ml"><div class="em">Select an alias</div></div>
+    </div>
+
+    <div id="tv-search" class="tv">
+      <div class="sr-b"><input id="sq" placeholder="Search text..." onkeydown="if(event.key==='Enter')doSearch()" /><button class="btn btn-xs btn-s" onclick="doSearch()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button></div>
-      <pre id="gt"></pre>
+      <div id="sl" class="ml" style="margin-top:12px"><div class="em">Enter a query</div></div>
+    </div>
+
+    <div id="tv-gen" class="tv">
+      <div class="ge">
+        <button class="gc" onclick="genType('dot')"><div class="gc-i">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+        </div><span class="gc-l">Dot</span><span class="gc-d">user.name@</span></button>
+        <button class="gc" onclick="genType('plus')"><div class="gc-i">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div><span class="gc-l">Plus</span><span class="gc-d">user+tag@</span></button>
+        <button class="gc" onclick="genType('dotplus')"><div class="gc-i">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"/><line x1="12" y1="5" x2="12" y2="3"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="5" y1="12" x2="3" y2="12"/><line x1="19" y1="12" x2="21" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        </div><span class="gc-l">Dot+</span><span class="gc-d">Plus variation</span></button>
+      </div>
+      <button class="gc c" onclick="genType('mixed')"><div class="gc-i">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+      </div><div><span class="gc-l">Mixed</span><span class="gc-d">Random dot or plus</span></div></button>
+      <div id="gr">
+        <pre id="gt"></pre>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- SETTINGS CARD -->
-<div class="card" style="margin-top:4px">
-  <div class="sh"><h2>Settings</h2></div>
+<!-- SETTINGS -->
+<div class="card" style="margin-top:-4px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <h2 style="font-size:14px;font-weight:600">Account</h2>
+  </div>
   <div class="sg">
-    <div class="si"><span class="si-l">User ID</span><span class="si-v" id="s-uid">-</span></div>
-    <div class="si"><span class="si-l">Username</span><span class="si-v" id="s-un">-</span></div>
-    <div class="si"><span class="si-l">Export</span><button class="btn btn-xs" onclick="doExport()">Export</button></div>
-    <div class="si"><span class="si-l">Tutorial</span><button class="btn btn-xs" onclick="showTut()">View</button></div>
-    <div class="si"><span class="si-l">Developer</span><button class="btn btn-xs" onclick="showDev()">Info</button></div>
+    <div class="si"><span class="si-l">User</span><span class="si-v" id="s-un">-</span></div>
+    <div class="si"><span class="si-l">Status</span><span class="si-v" id="s-st">-</span></div>
+    <div class="si"><span class="si-l">Tutorial</span><button class="btn btn-xs btn-s" onclick="showTut()">View</button></div>
+    <div class="si"><span class="si-l">Developer</span><button class="btn btn-xs btn-s" onclick="showDev()">Info</button></div>
   </div>
 </div>
 
@@ -285,7 +242,7 @@ body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fo
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button></div>
     <div id="mo-bd"></div>
-    <div id="mo-f"><button class="btn btn-s" onclick="closeModal()">Close</button></div>
+    <div id="mo-f"><button class="btn btn-xs btn-s" onclick="closeModal()">Close</button></div>
   </div>
 </div>
 
@@ -294,234 +251,201 @@ body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fo
 
 <script>
 const WA=window.Telegram?.WebApp
-function getUser(){
-  if(!WA?.initDataUnsafe?.user) return null
-  const u=WA.initDataUnsafe.user
-  return{id:u.id,fn:u.first_name||'',ln:u.last_name||'',un:u.username||'',lang:u.language_code||'',prem:u.is_premium||false,photo:u.photo_url||''}
+
+/* === STATE === */
+const S={aliases:JSON.parse(localStorage.getItem('tm_als')||'[]'),sel:null,msgs:[]}
+
+/* === UTILS === */
+function esc(s){
+  if(s===null||s===undefined)return''
+  const d=document.createElement('div');d.textContent=String(s);return d.innerHTML
+}
+function toast(t){
+  const e=document.getElementById('ts')
+  e.textContent=t;e.classList.remove('h')
+  setTimeout(()=>e.classList.add('h'),2000)
+}
+function saveAls(){
+  localStorage.setItem('tm_als',JSON.stringify(S.aliases))
+  renderAls()
 }
 
-const S={emails:JSON.parse(localStorage.getItem('tmap_emails')||'[]'),selEmail:localStorage.getItem('tmap_sel')||null,msgs:[],pgN:1,pgT:1}
-
+/* === API === */
 async function api(m,p){
   const qs=new URLSearchParams({method:m,...(p||{})}).toString()
   try{
     const r=await fetch('/api/proxy?'+qs)
-    if(!r.ok){const e=await r.text();modal('Error',r.status+' — '+(e?.error||e));return null}
+    if(!r.ok){
+      let e
+      try{e=await r.json()}catch{e={error:await r.text()}}
+      modal('Error',r.status+' — '+(e.error||e.message||JSON.stringify(e)))
+      return null
+    }
     return await r.json()
   }catch(e){modal('Network Error',e.message);return null}
-}
-
-function toast(t){
-  const el=document.getElementById('ts')
-  el.textContent=t;el.classList.remove('h')
-  setTimeout(()=>el.classList.add('h'),2000)
-}
-
-function esc(s){
-  if(s===null||s===undefined) return ''
-  const d=document.createElement('div');d.textContent=String(s);return d.innerHTML
 }
 
 /* === MODAL === */
 function modal(t,b,f){
   document.getElementById('mo-t').textContent=t
   document.getElementById('mo-bd').innerHTML=(typeof b==='string'?b.replace(/\n/g,'<br>'):'')
-  document.getElementById('mo-f').innerHTML=f||'<button class="btn btn-s" onclick="closeModal()">Close</button>'
+  document.getElementById('mo-f').innerHTML=f||'<button class="btn btn-xs btn-s" onclick="closeModal()">Close</button>'
   document.getElementById('mo').classList.remove('h')
 }
 function closeModal(){document.getElementById('mo').classList.add('h')}
 
 /* === TABS === */
 function swTab(el,n){
-  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'))
+  document.querySelectorAll('#tabs-sec .tb').forEach(b=>b.classList.remove('on'))
   el.classList.add('on')
-  document.querySelectorAll('.tv').forEach(v=>v.classList.remove('on'))
+  document.querySelectorAll('#tabs-sec .tv').forEach(v=>v.classList.remove('on'))
   document.getElementById('tv-'+n).classList.add('on')
 }
 
 /* === PROFILE === */
 function loadProfile(){
-  const u=getUser()
+  const u=WA?.initDataUnsafe?.user
   if(!u) return
-  document.getElementById('pf-n').textContent=(u.fn+' '+u.ln).trim()||'Unknown'
-  document.getElementById('pf-u').textContent=u.un?'@'+u.un:'no username'
-  document.getElementById('s-uid').textContent=u.id
-  document.getElementById('s-un').textContent=u.un||'-'
-  const av=document.getElementById('pf-av')
-  if(u.photo) av.innerHTML='<img src="'+u.photo+'" alt="" />'
-  else av.textContent=(u.fn[0]||'?').toUpperCase()
-  const pe=document.getElementById('pf-p')
-  if(u.prem){pe.style.display='inline-block'}else{pe.style.display='none'}
-  document.getElementById('st-st').textContent=u.prem?'Premium':'Free'
+  document.getElementById('s-un').textContent='@'+(u.username||u.first_name||'user')
+  document.getElementById('s-st').textContent=u.is_premium?'Premium':'Free'
 }
 
-/* === EMAIL MANAGEMENT === */
-function saveEmails(){
-  localStorage.setItem('tmap_emails',JSON.stringify(S.emails))
-  localStorage.setItem('tmap_sel',S.selEmail)
-  renderEmails()
-}
-
-function renderEmails(){
-  const el=document.getElementById('ec')
-  const sec=document.getElementById('act-sec')
-  if(!S.emails.length){
-    el.innerHTML='<div class="em">No emails added yet</div>'
-    sec.style.display='none'
-    document.getElementById('st-em').textContent='0'
-    return
+/* === ALIAS MANAGEMENT === */
+function renderAls(){
+  const el=document.getElementById('ac')
+  const ts=document.getElementById('tabs-sec')
+  if(!S.aliases.length){
+    el.innerHTML='<div class="em" style="padding:8px 0">No aliases yet</div>'
+    ts.style.display='none';S.sel=null;return
   }
-  el.innerHTML=S.emails.map((e,i)=>{
-    const act=i===S.selEmail
-    return '<span class="ec-c'+(act?' act':'')+'" onclick="selectEmail('+i+')"><span>'+(act?'&#9654; ':'')+esc(e)+'</span><button class="ec-x" onclick="event.stopPropagation();removeEmail('+i+')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>'
+  el.innerHTML=S.aliases.map((a,i)=>{
+    const act=i===S.sel
+    return '<span class="ac-i'+(act?' act':'')+'" onclick="selectAl('+i+')"><span>'+(act?'&#9654; ':'')+esc(a)+'</span><button class="ac-x" onclick="event.stopPropagation();removeAl('+i+')">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button></span>'
   }).join('')
-  el.innerHTML+='<span class="ec-a" onclick="addEmail()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add</span>'
-  document.getElementById('st-em').textContent=S.emails.length
-  if(S.selEmail!==null&&S.selEmail<S.emails.length){
-    sec.style.display='block'
-  }else{
-    sec.style.display='none'
-  }
+  if(S.sel!==null&&S.sel<S.aliases.length){
+    ts.style.display='block'
+    loadInbox()
+  }else ts.style.display='none'
 }
 
-function addEmail(){
-  modal('Add Email','<p style="margin-bottom:8px">Enter a Gmail address:</p><input class="inp" id="ae-inp" placeholder="example@gmail.com" />',
-    '<button class="btn btn-xs btn-p" onclick="doAddEmail()">Add</button> <button class="btn btn-xs" onclick="closeModal()">Cancel</button>')
-  setTimeout(()=>document.getElementById('ae-inp')?.focus(),100)
+function addAl(a){
+  if(S.aliases.includes(a)) return
+  S.aliases.push(a)
+  S.sel=S.aliases.length-1
+  saveAls()
 }
-
-function doAddEmail(){
-  const v=document.getElementById('ae-inp')?.value.trim().toLowerCase()
-  if(!v||!v.includes('@')){alert('Enter a valid email');return}
-  if(S.emails.includes(v)){alert('Already added');return}
-  closeModal()
-  S.emails.push(v)
-  S.selEmail=S.emails.length-1
-  S.pgN=1
-  saveEmails()
+function removeAl(i){
+  S.aliases.splice(i,1)
+  if(S.sel===i) S.sel=S.aliases.length?0:null
+  else if(S.sel>i) S.sel--
+  saveAls()
+}
+function selectAl(i){
+  S.sel=i;saveAls()
+  document.querySelector('[data-tab="inbox"]').click()
   loadInbox()
 }
 
-function removeEmail(i){
-  S.emails.splice(i,1)
-  if(S.selEmail===i) S.selEmail=S.emails.length?0:null
-  else if(S.selEmail>i) S.selEmail--
-  S.pgN=1
-  saveEmails()
+/* === GENERATE === */
+async function gen(){
+  genType('mixed')
 }
 
-function selectEmail(i){
-  S.selEmail=i;S.pgN=1
-  saveEmails()
-  loadInbox()
+async function genType(k){
+  const gt=document.getElementById('gt')
+  gt.textContent='Generating...';document.getElementById('gr').style.display='block'
+  // Switch to generate tab
+  document.querySelectorAll('#tabs-sec .tb').forEach(b=>b.classList.remove('on'))
+  document.querySelector('[data-tab="gen"]').classList.add('on')
+  document.querySelectorAll('#tabs-sec .tv').forEach(v=>v.classList.remove('on'))
+  document.getElementById('tv-gen').classList.add('on')
+
+  const d=await api('generate',{type:k})
+  if(!d){gt.textContent='Failed';return}
+  const email=d.data?.email||d.email||''
+  if(email){
+    gt.textContent=email
+    addAl(email)
+    toast('Copied: '+email)
+    try{await navigator.clipboard.writeText(email)}catch{}
+  }else gt.textContent=JSON.stringify(d)
+}
+
+function checkManual(){
+  const v=document.getElementById('manual-email').value.trim()
+  if(!v||!v.includes('@')){toast('Enter a valid email');return}
+  addAl(v)
+  document.getElementById('manual-email').value=''
+  selectAl(S.aliases.length-1)
 }
 
 /* === INBOX === */
 async function loadInbox(){
   const el=document.getElementById('ix-l')
-  if(S.selEmail===null||!S.emails[S.selEmail]){el.innerHTML='<div class="em">Select an email</div>';return}
+  if(S.sel===null||!S.aliases[S.sel]){el.innerHTML='<div class="em">Select an alias</div>';return}
+  const email=S.aliases[S.sel]
   el.innerHTML='<div class="em">Loading...</div>'
-  const d=await api('read',{email:S.emails[S.selEmail]})
-  if(!d){el.innerHTML='<div class="em" style="color:var(--red)">Failed to load inbox</div>';return}
-  S.msgs=d.messages||d.data||d||[]
-  S.pgT=1
-  document.getElementById('ix-pg').textContent='1/1'
-  document.getElementById('st-ms').textContent=S.msgs.length
-  if(!Array.isArray(S.msgs)||!S.msgs.length){el.innerHTML='<div class="em">Inbox is empty</div>';return}
+  const d=await api('read',{email})
+  if(!d){el.innerHTML='<div class="em" style="color:var(--red)">Failed</div>';return}
+  S.msgs=d.data||[]
+  if(!S.msgs.length){el.innerHTML='<div class="em">No messages for '+esc(email)+'</div>';return}
   el.innerHTML=S.msgs.map((m,i)=>'<div class="ms" onclick="viewMsg('+i+')"><div class="ms-s">'+esc(m.subject||'(No subject)')+'</div><div class="ms-f">'+esc(m.from||'?')+'</div>'+(m.snippet?'<div class="ms-sn">'+esc(m.snippet)+'</div>':'')+'</div>').join('')
 }
-
-function pg(d){/* pagination if API supports */}
 
 async function doSearch(){
   const q=document.getElementById('sq').value.trim()
   const el=document.getElementById('sl')
-  if(!q||S.selEmail===null){el.innerHTML='<div class="em">Enter a query</div>';return}
+  if(!q||S.sel===null||!S.aliases[S.sel]){el.innerHTML='<div class="em">Enter a query</div>';return}
   el.innerHTML='<div class="em">Searching...</div>'
-  const d=await api('search',{email:S.emails[S.selEmail],query:q})
-  if(!d){el.innerHTML='<div class="em" style="color:var(--red)">Search failed</div>';return}
-  const ms=d.messages||d.data||d||[]
-  if(!Array.isArray(ms)||!ms.length){el.innerHTML='<div class="em">No results</div>';return}
-  el.innerHTML=ms.map((m,i)=>'<div class="ms" onclick="viewMsgData('+i+')"><div class="ms-s">'+esc(m.subject||'(No subject)')+'</div><div class="ms-f">'+esc(m.from||'?')+'</div></div>').join('')
+  const d=await api('search',{email:S.aliases[S.sel],query:q})
+  if(!d){el.innerHTML='<div class="em" style="color:var(--red)">Failed</div>';return}
+  const ms=d.data||[]
   window._sr=ms
+  if(!ms.length){el.innerHTML='<div class="em">No results</div>';return}
+  el.innerHTML=ms.map((m,i)=>'<div class="ms" onclick="viewMsgSr('+i+')"><div class="ms-s">'+esc(m.subject||'(No subject)')+'</div><div class="ms-f">'+esc(m.from||'?')+'</div></div>').join('')
 }
-function viewMsgData(i){showMsg(window._sr[i])}
+function viewMsgSr(i){showMsg(window._sr[i])}
 function viewMsg(i){showMsg(S.msgs[i])}
 
 function showMsg(m){
-  const body=m.body||m.snippet||'(No content)'
+  const body=m.body||'(No content)'
   modal(esc(m.subject||'(No subject)'),
-    '<div style="margin-bottom:12px"><div style="color:var(--text2);font-size:12px">From: <strong style="color:var(--text)">'+esc(m.from||'?')+'</strong></div><div style="color:var(--text2);font-size:12px">Date: '+esc(m.date||'?')+'</div></div><div style="border-top:1px solid var(--border);padding-top:12px"><pre style="white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:13px;color:var(--text2);line-height:1.6;margin:0">'+esc(body)+'</pre></div>',
-    '<button class="btn btn-xs btn-d" onclick="closeModal();delMsg(\''+esc((m.uid||m.id||'').replace(/'/g,"\\'"))+'\')">Delete</button> <button class="btn btn-xs" onclick="closeModal()">Close</button>')
+    '<div style="margin-bottom:12px"><div style="font-size:12px;color:var(--text2);margin-bottom:2px"><strong style="color:var(--text)">From:</strong> '+esc(m.from||'?')+'</div><div style="font-size:12px;color:var(--text2);margin-bottom:2px"><strong style="color:var(--text)">To:</strong> '+esc(m.to||'?')+'</div><div style="font-size:12px;color:var(--text2)"><strong style="color:var(--text)">Date:</strong> '+esc(m.date||'?')+'</div></div><div style="border-top:1px solid var(--border);padding-top:14px"><pre style="font-family:inherit;font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap;word-break:break-word;margin:0">'+esc(body)+'</pre></div>',
+    '<button class="btn btn-xs btn-d" onclick="closeModal();delMsg(\''+esc(String(m.uid||'').replace(/'/g,"\\'"))+'\')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Delete</button> <button class="btn btn-xs btn-s" onclick="closeModal()">Close</button>')
 }
 
 async function delMsg(uid){
-  if(!uid||uid===''){modal('Delete','Deletion requires a UID. Use /zeron-delete in Telegram.');return}
-  if(!confirm('Delete this message?')) return
+  if(!uid){toast('No UID available');return}
+  if(!confirm('Move this message to Trash?')) return
   const d=await api('delete',{uid})
-  if(d&&(d.status===true||d.status===200||d.raw==='true')) toast('Deleted!')
-  else toast('Delete failed. Use bot command.')
+  if(d===true||d?.status===true||d?.raw==='true'){toast('Deleted!');closeModal()}
+  else toast('Delete failed')
 }
 
-/* === GENERATE === */
-async function gen(t){
-  document.getElementById('gr').style.display='block'
-  document.getElementById('gt').textContent='Generating...'
-  const d=await api('generate',{type:t})
-  if(!d){document.getElementById('gt').textContent='Generation failed';return}
-  document.getElementById('gt').textContent=d.email||d.result||JSON.stringify(d)
-}
-
-function customGen(){
-  modal('Custom Generate','<p style="margin-bottom:8px">Enter base or custom params:</p><input class="inp" id="cg-inp" placeholder="e.g. base.email" />',
-    '<button class="btn btn-xs btn-p" onclick="doCG()">Generate</button> <button class="btn btn-xs" onclick="closeModal()">Cancel</button>')
-}
-async function doCG(){
-  const v=document.getElementById('cg-inp')?.value.trim()
-  if(!v){alert('Enter something');return}
-  closeModal()
-  document.getElementById('gr').style.display='block'
-  document.getElementById('gt').textContent='Generating...'
-  const d=await api('generate',{custom:v})
-  if(!d){document.getElementById('gt').textContent='Generation failed';return}
-  document.getElementById('gt').textContent=d.email||d.result||JSON.stringify(d)
-}
-
-async function copyRes(){
-  const t=document.getElementById('gt').textContent
-  if(!t||t==='Generating...'||t==='Generation failed') return
-  try{await navigator.clipboard.writeText(t);toast('Copied!')}catch{}
-}
-
-/* === SETTINGS === */
-async function doExport(){
-  modal('Export','Emails are stored locally.\n<pre style="font-size:12px">'+esc(JSON.stringify(S.emails,null,2))+'</pre>')
-}
-
-function showTut(){
-  modal('How to Use',
-    '<h3>Tmap Gmail Mini App</h3><p><strong>1. Add Email</strong> — Tap "+ Add" and paste your Gmail address.</p><p><strong>2. View Inbox</strong> — Tap an email chip to load its inbox. Read messages by tapping them.</p><p><strong>3. Search</strong> — Switch to Search tab to find specific messages.</p><p><strong>4. Generate</strong> — Create new temporary Gmail addresses via Dot Trick, Plus Alias, Mixed.</p><p><strong>5. Delete</strong> — Delete messages from the message view.</p><hr style="border-color:var(--border);margin:12px 0"><p style="font-size:12px">Bot commands: /zeron-generate, /zeron-accounts, /zeron-inbox, /zeron-delete</p>')
-}
-
-function showDev(){
-  modal('Developer',
-    '<h3>Tmap Gmail</h3><p><strong>Creator</strong> @CodeDevZeron</p><p><strong>Channel</strong> @ZeronHub</p><p><strong>Stack</strong> TBC Bot Controller + Gmail API</p><p><strong>Design</strong> Clean flat — Telegram Mini App</p><p><strong>Version</strong> 1.0.0</p>')
-}
-
+/* === MENU === */
 function openMenu(){
   modal('Tmap Gmail',
-    '<p style="color:var(--text);font-weight:600;margin-bottom:8px">Quick Navigation</p>'+
-    '<p><button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal()">Profile</button></p>'+
-    '<p><button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal()">Inbox</button></p>'+
-    '<p><button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal()">Generate</button></p>')
+    '<p style="color:var(--text);font-weight:600;margin-bottom:10px">Temp Gmail Mini App</p>'+
+    '<p style="font-size:13px">Powered by Gmail IMAP API. Generate dot/plus aliases, read inbox, search, and delete messages.</p>'+
+    '<p style="margin-top:12px;font-size:12px;color:var(--text3)">All aliases are disposable. Delete messages to keep inbox clean.</p>')
+}
+function showTut(){
+  modal('How to Use',
+    '<h3>Tmap Gmail Mini App</h3><p><strong>1. Generate</strong> — Tap "New Alias" or choose Dot/Plus/Dot+/Mixed to create a disposable Gmail alias. Auto-saved and copied.</p><p><strong>2. Read</strong> — Tap any saved alias to load its inbox. Tap a message to view full content.</p><p><strong>3. Search</strong> — Switch to Search tab and enter text to find specific messages.</p><p><strong>4. Delete</strong> — Open a message and tap Delete to move it to Trash.</p><p><strong>5. Manual</strong> — Type any email address and tap &#8250; to check its inbox.</p>')
+}
+function showDev(){
+  modal('Developer Info',
+    '<h3>Tmap Gmail v1.0</h3><p><strong>Creator</strong> @CodeDevZeron</p><p><strong>Design</strong> Clean flat, DM Sans typography, teal theme</p><p><strong>API</strong> Gmail IMAP via Vercel serverless</p><p><strong>Stack</strong> Flask + Python on Vercel</p>')
 }
 
 /* === INIT === */
 WA?.ready()
 WA?.expand()
 loadProfile()
-renderEmails()
-if(S.selEmail!==null&&S.emails[S.selEmail]) loadInbox()
+renderAls()
+if(S.sel!==null&&S.aliases[S.sel]) loadInbox()
 </script>
 </body>
 </html>
