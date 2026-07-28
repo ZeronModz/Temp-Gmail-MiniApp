@@ -4,143 +4,144 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta name="theme-color" content="#0D9488" />
+<meta name="color-scheme" content="light" />
 <title>Tmap Gmail</title>
 <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#F1F5F9;--card:#fff;--primary:#0D9488;--primary-l:#14B8A6;
-  --accent:#F97316;--red:#EF4444;--green:#22C55E;
+  --bg:#F8FAFC;--card:#fff;--primary:#0D9488;--primary-l:#14B8A6;--primary-bg:#ECFDF5;
+  --accent:#F97316;--accent-bg:#FFF7ED;--red:#EF4444;--red-bg:#FEF2F2;
   --text:#0F172A;--text2:#64748B;--text3:#94A3B8;
   --border:#E2E8F0;--b2:#CBD5E1;
-  --r:12px;--rs:8px;--sh:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
-  --sh-h:0 4px 6px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.04);
-  --font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --r:14px;--rs:10px;--sh:0 1px 2px rgba(0,0,0,0.04),0 1px 4px rgba(0,0,0,0.06);
+  --sh-h:0 4px 12px rgba(0,0,0,0.08);
+  --font:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
 }
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased}
+html{height:100%}
+body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 24px 0}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px}
-#app{height:100%;display:flex;flex-direction:column}
+
+/* LAYOUT */
+.c{max-width:480px;margin:0 auto;padding:0 16px}
 
 /* HEADER */
-#top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0}
-#top-l{display:flex;align-items:center;gap:10px}
-#top-badge{background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.5px}
-#top-title{font-size:16px;font-weight:700;color:var(--text)}
-#top-menu{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:4px;line-height:1;border-radius:var(--rs);width:36px;height:36px;display:flex;align-items:center;justify-content:center}
-#top-menu:hover{background:var(--bg);color:var(--text)}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.hd-l{display:flex;align-items:center;gap:8px}
+.hd-b{background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.3px}
+.hd-t{font-size:17px;font-weight:700;color:var(--text)}
+.hd-r{background:none;border:none;color:var(--text2);padding:6px;border-radius:var(--rs);cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center}
+.hd-r:hover{background:var(--bg)}
 
-/* MAIN */
-#main{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 80px 0}
-.sec{display:none;padding:16px}
-.sec.on{display:block}
+/* CARDS */
+.card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:14px}
+.card-s{background:var(--card);border-radius:var(--rs);padding:14px 16px;box-shadow:var(--sh);margin-bottom:10px}
+
+/* PROFILE CARD */
+.pf{display:flex;align-items:center;gap:14px}
+.pf-av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-l));flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700}
+.pf-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.pf-n{font-size:17px;font-weight:700}
+.pf-u{font-size:13px;color:var(--text2);margin-top:1px}
+.pf-p{display:inline-block;font-size:10px;font-weight:600;padding:2px 10px;border-radius:10px;margin-top:4px;background:linear-gradient(135deg,#FCD34D,#F59E0B);color:#fff}
+
+/* STATS ROW */
+.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.sb{text-align:center;padding:14px 8px}
+.sb-n{display:block;font-size:24px;font-weight:700;color:var(--primary)}
+.sb-l{display:block;font-size:11px;color:var(--text2);margin-top:2px;font-weight:500}
 
 /* SECTION HEADER */
-.sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.sec-hdr h2{font-size:16px;font-weight:700;color:var(--text)}
-.sec-hdr-rt{display:flex;gap:6px;align-items:center}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sh h2{font-size:15px;font-weight:700;color:var(--text)}
+.sh-r{display:flex;gap:6px;align-items:center}
 
 /* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border-radius:var(--rs);transition:all .15s;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border-radius:var(--rs);transition:all .12s;white-space:nowrap}
 .btn:hover{background:var(--bg);border-color:var(--b2);box-shadow:var(--sh)}
-.btn:active{transform:scale(0.97)}
+.btn:active{transform:scale(.97)}
 .btn-p{background:var(--primary);color:#fff;border-color:var(--primary)}
 .btn-p:hover{background:var(--primary-l);border-color:var(--primary-l)}
 .btn-o{background:var(--accent);color:#fff;border-color:var(--accent)}
-.btn-o:hover{opacity:0.9}
-.btn-d{background:var(--card);color:var(--red);border-color:var(--red)}
+.btn-o:hover{opacity:.9}
+.btn-d{color:var(--red);border-color:var(--red)}
 .btn-d:hover{background:var(--red);color:#fff}
-.btn-s{padding:5px 12px;font-size:12px}
-.btn-xs{padding:3px 8px;font-size:11px}
-.btn:disabled{opacity:0.5;cursor:not-allored;transform:none}
+.btn-s{padding:6px 14px;font-size:12px}
+.btn-xs{padding:4px 10px;font-size:11px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* INPUTS */
-.inp{background:var(--card);color:var(--text);border:1px solid var(--border);padding:10px 14px;font-family:inherit;font-size:14px;width:100%;outline:none;border-radius:var(--rs);transition:border .15s}
-.inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,148,136,0.1)}
+.inp{background:var(--card);color:var(--text);border:1px solid var(--border);padding:10px 14px;font-family:inherit;font-size:14px;width:100%;outline:none;border-radius:var(--rs);transition:border .12s}
+.inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,148,136,.1)}
 .inp::placeholder{color:var(--text3)}
-.sel{background:var(--card);color:var(--text);border:1px solid var(--border);padding:9px 12px;font-family:inherit;font-size:13px;cursor:pointer;outline:none;border-radius:var(--rs);width:100%;transition:border .15s}
+.sel{background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 12px;font-family:inherit;font-size:13px;cursor:pointer;outline:none;border-radius:var(--rs);width:100%}
 .sel:focus{border-color:var(--primary)}
-.sel option{background:var(--card);color:var(--text)}
+
+/* EMAIL CHIPS */
+.ec{display:flex;flex-wrap:wrap;gap:8px}
+.ec-c{display:inline-flex;align-items:center;gap:6px;background:var(--primary-bg);color:var(--primary);border-radius:20px;padding:6px 12px 6px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;border:1.5px solid transparent}
+.ec-c:hover{border-color:var(--primary)}
+.ec-c.act{border-color:var(--primary);background:var(--primary);color:#fff}
+.ec-c.act svg{stroke:#fff}
+.ec-x{background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;border-radius:50%;color:inherit;opacity:.7}
+.ec-x:hover{opacity:1}
+.ec-a{display:inline-flex;align-items:center;gap:6px;background:var(--bg);color:var(--text2);border:1.5px dashed var(--border);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s}
+.ec-a:hover{border-color:var(--b2);color:var(--text)}
 
 /* TABS */
-.tab-r{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:var(--r);margin-bottom:16px}
-.tab{flex:1;padding:8px 12px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:none;border-radius:var(--rs);background:transparent;color:var(--text2);transition:all .15s}
-.tab.on{background:var(--card);color:var(--primary);box-shadow:var(--sh)}
-.tab-v{display:none}
-.tab-v.on{display:block}
-
-/* === PROFILE === */
-#pfp-c{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:16px}
-#pfp-row{display:flex;gap:16px;align-items:center}
-#pfp-av{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-l));flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff}
-#pfp-av img{width:100%;height:100%;object-fit:cover}
-#pfp-nm{font-size:20px;font-weight:700;color:var(--text)}
-#pfp-un{font-size:13px;color:var(--text2);margin-top:2px}
-#pfp-prem{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;margin-top:4px;background:linear-gradient(135deg,#FCD34D,#F59E0B);color:#fff}
-#stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.st-b{background:var(--card);border-radius:var(--r);padding:16px;text-align:center;box-shadow:var(--sh);transition:box-shadow .15s}
-.st-n{display:block;font-size:26px;font-weight:700;color:var(--primary)}
-.st-l{display:block;font-size:11px;color:var(--text2);margin-top:4px;font-weight:500}
-.acl{display:flex;flex-direction:column;gap:8px}
-.ac{background:var(--card);border-radius:var(--rs);padding:14px 16px;box-shadow:var(--sh);display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .15s;border:1px solid transparent}
-.ac:hover{box-shadow:var(--sh-h);border-color:var(--border)}
-.ac-e{font-size:13px;font-weight:600;color:var(--text);word-break:break-all}
-.ac-a{color:var(--primary);font-weight:700;font-size:18px}
-.ac-n{color:var(--text3);font-size:13px;font-weight:500}
+.tr{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:var(--r);margin-bottom:16px}
+.tb{flex:1;padding:8px 12px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:none;border-radius:var(--rs);background:transparent;color:var(--text2);transition:all .12s}
+.tb.on{background:var(--card);color:var(--primary);box-shadow:var(--sh)}
+.tv{display:none}
+.tv.on{display:block}
 
 /* INBOX */
-#ibx-sel-w{background:var(--card);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:14px}
-.ibx-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;font-weight:600;color:var(--text2)}
-.ibx-bar-pg{display:flex;align-items:center;gap:8px}
-.ibx-l{display:flex;flex-direction:column;gap:8px}
-.msg{background:var(--card);border-radius:var(--rs);padding:14px 16px;box-shadow:var(--sh);cursor:pointer;transition:all .15s;border:1px solid transparent}
-.msg:hover{box-shadow:var(--sh-h);border-color:var(--border)}
-.msg-s{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
-.msg-f{font-size:12px;color:var(--text2)}
-.msg-sn{font-size:12px;color:var(--text3);margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.msg-em{color:var(--primary);font-weight:600}
-.srch-r{display:flex;gap:8px;margin-bottom:14px}
-.srch-r .inp{flex:1}
+.ix-b{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;font-weight:600;color:var(--text2)}
+.ix-p{display:flex;align-items:center;gap:8px}
+.ix-l{display:flex;flex-direction:column;gap:8px}
+.ms{background:var(--card);border-radius:var(--rs);padding:14px 16px;box-shadow:var(--sh);cursor:pointer;transition:all .12s;border:1px solid transparent}
+.ms:hover{box-shadow:var(--sh-h);border-color:var(--border)}
+.ms-s{font-size:14px;font-weight:600;margin-bottom:4px}
+.ms-f{font-size:12px;color:var(--text2)}
+.ms-sn{font-size:12px;color:var(--text3);margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sr-b{display:flex;gap:8px;margin-bottom:14px}
+.sr-b .inp{flex:1}
 
 /* GENERATE */
-#gen-gr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
-.gc{background:var(--card);border-radius:var(--r);padding:20px 12px;text-align:center;cursor:pointer;border:1px solid var(--border);font-family:inherit;transition:all .15s;box-shadow:var(--sh)}
+.ge{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.gc{background:var(--card);border-radius:var(--r);padding:18px 10px;text-align:center;cursor:pointer;border:1px solid var(--border);font-family:inherit;transition:all .12s;box-shadow:var(--sh)}
 .gc:hover{box-shadow:var(--sh-h);border-color:var(--primary);transform:translateY(-1px)}
-.gc-i{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0D9488,#14B8A6);color:#fff;font-size:18px;font-weight:700;margin-bottom:8px}
-.gc-l{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.gc-i{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-l));margin:0 auto 8px;color:#fff}
+.gc-l{display:block;font-size:13px;font-weight:600;margin-bottom:2px}
 .gc-d{display:block;font-size:11px;color:var(--text3)}
-.gc.c{display:flex;align-items:center;gap:14px;text-align:left;padding:14px 16px;width:100%;margin-bottom:12px}
-.gc.c .gc-i{margin-bottom:0;flex-shrink:0}
+.gc.c{display:flex;align-items:center;gap:12px;text-align:left;padding:14px 16px;width:100%;margin-bottom:12px}
+.gc.c .gc-i{margin:0;flex-shrink:0}
 .gc.c .gc-l{margin-bottom:0}
-#gen-r{margin-top:16px}
-#gen-r pre{background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-family:'SF Mono',Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;margin-top:8px;box-shadow:var(--sh)}
+#gr pre{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-family:'SF Mono',Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;margin-top:8px}
 
 /* SETTINGS */
-.sg{background:var(--card);border-radius:var(--r);padding:4px 16px;box-shadow:var(--sh);margin-bottom:14px}
-.si{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:12px;border-bottom:1px solid var(--border)}
-.si:last-child{border-bottom:none}
-.si-l{font-size:13px;font-weight:600;color:var(--text);flex-shrink:0}
-.si-c{display:flex;gap:6px;align-items:center}
-.si-c .inp{width:150px;font-size:13px}
+.sg .si{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:12px;border-bottom:1px solid var(--border)}
+.sg .si:last-child{border-bottom:none}
+.si-l{font-size:13px;font-weight:600;flex-shrink:0}
 .si-v{font-size:12px;color:var(--text2);text-align:right;word-break:break-all}
-.si-vl{font-size:12px;color:var(--text2);margin-top:2px}
 
-/* BOTTOM NAV */
-#nav{display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;padding:4px 0 env(safe-area-inset-bottom,4px)}
-.nv{background:none;color:var(--text3);border:none;padding:6px 2px;font-family:inherit;font-size:10px;font-weight:600;cursor:pointer;letter-spacing:0.3px;text-align:center;transition:color .15s;border-radius:0;position:relative}
-.nv.on{color:var(--primary)}
-.nv.on::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--primary);border-radius:0 0 2px 2px}
-.nv-i{display:block;font-size:20px;margin-bottom:2px;font-weight:300}
-.nv-l{display:block}
+/* EMPTY STATE */
+.em{text-align:center;padding:32px 16px;color:var(--text3);font-size:13px;font-weight:500}
+.em-i{margin-bottom:10px;display:flex;justify-content:center}
+
+/* TOAST */
+#ts{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 22px;border-radius:var(--r);font-size:13px;font-weight:600;z-index:9999;white-space:nowrap;transition:opacity .2s;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+#ts.h{opacity:0;pointer-events:none}
 
 /* MODAL */
-#mo{position:fixed;inset:0;background:rgba(15,23,42,0.5);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;backdrop-filter:blur(4px)}
+#mo{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;backdrop-filter:blur(4px)}
 #mo.h{display:none}
-#mo-b{width:100%;max-width:400px;max-height:85vh;background:var(--card);border-radius:var(--r);box-shadow:0 20px 60px rgba(0,0,0,0.12);display:flex;flex-direction:column}
+#mo-b{width:100%;max-width:400px;max-height:85vh;background:var(--card);border-radius:var(--r);box-shadow:0 20px 60px rgba(0,0,0,.12);display:flex;flex-direction:column}
 #mo-h{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
-#mo-t{font-size:16px;font-weight:700;color:var(--text)}
-#mo-x{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:4px;line-height:1;border-radius:var(--rs);width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+#mo-t{font-size:16px;font-weight:700}
+#mo-x{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:var(--rs);width:32px;height:32px;display:flex;align-items:center;justify-content:center}
 #mo-x:hover{background:var(--bg);color:var(--text)}
 #mo-bd{padding:20px;overflow-y:auto;font-size:14px;color:var(--text2);line-height:1.6}
 #mo-bd h3{font-size:15px;font-weight:700;color:var(--text);margin:0 0 8px}
@@ -149,192 +150,179 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 #mo-bd pre{background:var(--bg);padding:12px;border-radius:var(--rs);font-size:12px;margin:12px 0;overflow-x:auto;font-family:'SF Mono',Consolas,monospace}
 #mo-f{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
 
-/* TOAST */
-#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:600;z-index:9999;white-space:nowrap;transition:opacity .2s;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
-#toast.h{opacity:0;pointer-events:none}
+/* NOTICE */
+.notice{display:flex;align-items:flex-start;gap:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;font-size:12px;color:#92400E;line-height:1.5}
+.notice svg{flex-shrink:0;margin-top:1px}
 
-/* EMPTY STATE */
-.empt{padding:20px;text-align:center;color:var(--text3);font-size:13px;font-weight:500}
-.empt i{display:block;font-size:32px;margin-bottom:8px;font-style:normal}
-
-/* LOADING SKELETON */
-.sk{background:linear-gradient(90deg,var(--border) 25%,#f1f5f9 50%,var(--border) 75%);background-size:400% 100%;animation:sk 1.5s infinite;border-radius:var(--rs)}
-@keyframes sk{0%{background-position:400% 0}100%{background-position:0 0}}
-
-@media(max-width:380px){
-  #stats{gap:6px}
-  .st-b{padding:12px 8px}
-  .st-n{font-size:22px}
-  #gen-gr{grid-template-columns:1fr}
-  .si{flex-direction:column;align-items:stretch;gap:8px}
-  .si-c .inp{width:100%}
-  .si-c{flex-wrap:wrap}
+@media(max-width:400px){
+  .ge{grid-template-columns:1fr}
+  .sr{gap:6px}
+  .sb{padding:10px 6px}
+  .sb-n{font-size:20px}
 }
 </style>
 </head>
 <body>
-<div id="app">
 
 <!-- HEADER -->
-<header id="top">
-  <div id="top-l"><span id="top-badge">TMAP</span><span id="top-title">Gmail</span></div>
-  <button id="top-menu" onclick="openMenu()">☰</button>
+<header class="hd">
+  <div class="hd-l">
+    <span class="hd-b">TMAP</span>
+    <span class="hd-t">Gmail</span>
+  </div>
+  <button class="hd-r" onclick="openMenu()" aria-label="Menu">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
 </header>
 
-<!-- MAIN -->
-<main id="main">
+<main class="c">
 
-<!-- ===== PROFILE ===== -->
-<section id="sec-profile" class="sec on">
-  <div id="pfp-c">
-    <div id="pfp-row">
-      <div id="pfp-av">?</div>
-      <div>
-        <div id="pfp-nm">Loading...</div>
-        <div id="pfp-un">please wait</div>
-        <div id="pfp-prem" class="h"></div>
-      </div>
+<!-- PROFILE CARD -->
+<div id="pf" class="card">
+  <div class="pf">
+    <div class="pf-av" id="pf-av">?</div>
+    <div>
+      <div class="pf-n" id="pf-n">Loading...</div>
+      <div class="pf-u" id="pf-u">please wait</div>
+      <div id="pf-p" class="pf-p" style="display:none">&#9733; Premium</div>
     </div>
   </div>
+</div>
 
-  <div id="stats">
-    <div class="st-b"><span class="st-n" id="st-acc">-</span><span class="st-l">Accounts</span></div>
-    <div class="st-b"><span class="st-n" id="st-msg">-</span><span class="st-l">Messages</span></div>
-    <div class="st-b"><span class="st-n" id="st-prem">-</span><span class="st-l">Status</span></div>
+<!-- STATS -->
+<div class="sr">
+  <div class="card sb"><span class="sb-n" id="st-em">0</span><span class="sb-l">Emails</span></div>
+  <div class="card sb"><span class="sb-n" id="st-ms">-</span><span class="sb-l">Messages</span></div>
+  <div class="card sb"><span class="sb-n" id="st-st">-</span><span class="sb-l">Status</span></div>
+</div>
+
+<!-- EMAIL MANAGER -->
+<div class="card">
+  <div class="sh"><h2>Email Addresses</h2><button class="btn btn-xs btn-p" onclick="addEmail()">+ Add</button></div>
+  <div id="ec" class="ec"><div class="em">No emails added yet</div></div>
+</div>
+
+<!-- NOTICE -->
+<div id="notice" class="notice" style="display:none">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <span>API password set via Vercel env. No configuration needed.</span>
+</div>
+
+<!-- ACTIVE EMAIL SECTION -->
+<div id="act-sec" style="display:none">
+
+  <div class="tr">
+    <button class="tb on" data-tab="inbox" onclick="swTab(this,'inbox')">Inbox</button>
+    <button class="tb" data-tab="search" onclick="swTab(this,'search')">Search</button>
+    <button class="tb" data-tab="generate" onclick="swTab(this,'generate')">Generate</button>
   </div>
 
-  <div class="sec-hdr"><h2>Accounts</h2><button class="btn btn-s" onclick="loadProfile()">⟳ Refresh</button></div>
-  <div id="accl" class="acl"></div>
-</section>
-
-<!-- ===== INBOX ===== -->
-<section id="sec-inbox" class="sec">
-  <div id="ibx-sel-w">
-    <select class="sel" id="ibx-sel" onchange="onAccChange()"><option value="">Select account...</option></select>
-  </div>
-
-  <div class="tab-r">
-    <button class="tab on" data-tab="list" onclick="switchTab(this,'list')">Inbox</button>
-    <button class="tab" data-tab="search" onclick="switchTab(this,'search')">Search</button>
-  </div>
-
-  <div id="tv-list" class="tab-v on">
-    <div class="ibx-bar">
-      <button class="btn btn-xs" onclick="loadInbox()">⟳ Refresh</button>
-      <span class="ibx-bar-pg"><span id="ibx-pg">Page 1/1</span><button class="btn btn-xs" onclick="prevPage()">‹</button><button class="btn btn-xs" onclick="nextPage()">›</button></span>
+  <!-- INBOX TAB -->
+  <div id="tv-inbox" class="tv on">
+    <div class="ix-b">
+      <button class="btn btn-xs" onclick="loadInbox()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Refresh
+      </button>
+      <span class="ix-p"><span id="ix-pg">Page 1/1</span><button class="btn btn-xs" onclick="pg(-1)">&#8249;</button><button class="btn btn-xs" onclick="pg(1)">&#8250;</button></span>
     </div>
-    <div id="ibx-l" class="ibx-l"><div class="empt"><i>📭</i>Select an account</div></div>
+    <div id="ix-l" class="ix-l"><div class="em">Select an email to view inbox</div></div>
   </div>
 
-  <div id="tv-search" class="tab-v">
-    <div class="srch-r"><input class="inp" id="srch-q" placeholder="Search emails..." onkeydown="if(event.key==='Enter')doSearch()" /><button class="btn btn-p" onclick="doSearch()">Search</button></div>
-    <div id="srch-l"><div class="empt"><i>🔍</i>Enter a query to search</div></div>
+  <!-- SEARCH TAB -->
+  <div id="tv-search" class="tv">
+    <div class="sr-b"><input class="inp" id="sq" placeholder="Search messages..." onkeydown="if(event.key==='Enter')doSearch()" /><button class="btn btn-p btn-s" onclick="doSearch()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search
+    </button></div>
+    <div id="sl"><div class="em">Enter a query to search</div></div>
   </div>
-</section>
 
-<!-- ===== GENERATE ===== -->
-<section id="sec-compose" class="sec">
-  <div class="sec-hdr"><h2>Generate Email</h2></div>
-  <div id="gen-gr">
-    <button class="gc" onclick="gen('dot')"><div class="gc-i">.+</div><span class="gc-l">Dot Trick</span><span class="gc-d">user.name@gmail.com</span></button>
-    <button class="gc" onclick="gen('plus')"><div class="gc-i">+</div><span class="gc-l">Plus Alias</span><span class="gc-d">user+tag@gmail.com</span></button>
-    <button class="gc" onclick="gen('mixed')"><div class="gc-i">*?</div><span class="gc-l">Mixed</span><span class="gc-d">Random generation</span></button>
+  <!-- GENERATE TAB -->
+  <div id="tv-generate" class="tv">
+    <div class="ge">
+      <button class="gc" onclick="gen('dot')"><div class="gc-i">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="4" r="1.5"/><circle cx="12" cy="20" r="1.5"/><circle cx="4" cy="12" r="1.5"/><circle cx="20" cy="12" r="1.5"/></svg>
+      </div><span class="gc-l">Dot Trick</span><span class="gc-d">user.name@</span></button>
+      <button class="gc" onclick="gen('plus')"><div class="gc-i">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div><span class="gc-l">Plus Alias</span><span class="gc-d">user+tag@</span></button>
+      <button class="gc" onclick="gen('mixed')"><div class="gc-i">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M16 3h5v5M8 21H3v-5M21 3l-7 7M3 21l7-7"/></svg>
+      </div><span class="gc-l">Mixed</span><span class="gc-d">random</span></button>
+    </div>
+    <button class="gc c" onclick="customGen()"><div class="gc-i">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    </div><div><span class="gc-l">Custom</span><span class="gc-d">Enter your own parameters</span></div></button>
+    <div id="gr" style="display:none">
+      <div class="sh" style="margin-top:16px"><h2>Result</h2><button class="btn btn-xs btn-p" onclick="copyRes()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy
+      </button></div>
+      <pre id="gt"></pre>
+    </div>
   </div>
-  <button class="gc c" onclick="customGen()"><div class="gc-i">✎</div><span class="gc-l">Custom</span><span class="gc-d">Enter your own parameters</span></button>
+</div>
 
-  <div id="gen-r" class="h">
-    <div class="sec-hdr"><h2>Result</h2><button class="btn btn-s btn-p" onclick="copyResult()">📋 Copy</button></div>
-    <pre id="gen-t"></pre>
-  </div>
-</section>
-
-<!-- ===== SETTINGS ===== -->
-<section id="sec-settings" class="sec">
-  <div class="sec-hdr"><h2>Settings</h2></div>
+<!-- SETTINGS CARD -->
+<div class="card" style="margin-top:4px">
+  <div class="sh"><h2>Settings</h2></div>
   <div class="sg">
-    <div class="si">
-      <span class="si-l">API Password</span>
-      <div class="si-c"><input class="inp" type="password" id="inp-pass" placeholder="Enter password" /><button class="btn btn-xs btn-p" onclick="savePass()">Save</button></div>
-    </div>
+    <div class="si"><span class="si-l">User ID</span><span class="si-v" id="s-uid">-</span></div>
+    <div class="si"><span class="si-l">Username</span><span class="si-v" id="s-un">-</span></div>
     <div class="si"><span class="si-l">Export</span><button class="btn btn-xs" onclick="doExport()">Export</button></div>
     <div class="si"><span class="si-l">Tutorial</span><button class="btn btn-xs" onclick="showTut()">View</button></div>
     <div class="si"><span class="si-l">Developer</span><button class="btn btn-xs" onclick="showDev()">Info</button></div>
   </div>
-  <div class="sg">
-    <div class="si"><span class="si-l">User ID</span><span class="si-v" id="set-uid">-</span></div>
-    <div class="si"><span class="si-l">Username</span><span class="si-v" id="set-uname">-</span></div>
-    <div class="si"><span class="si-l">Version</span><span class="si-v">1.0.0</span></div>
-  </div>
-</section>
-</main>
-
-<!-- BOTTOM NAV -->
-<nav id="nav">
-  <button class="nv on" data-sec="profile" onclick="goSec(this)"><span class="nv-i">👤</span><span class="nv-l">Profile</span></button>
-  <button class="nv" data-sec="inbox" onclick="goSec(this)"><span class="nv-i">📬</span><span class="nv-l">Inbox</span></button>
-  <button class="nv" data-sec="compose" onclick="goSec(this)"><span class="nv-i">➕</span><span class="nv-l">Generate</span></button>
-  <button class="nv" data-sec="settings" onclick="goSec(this)"><span class="nv-i">⚙️</span><span class="nv-l">Settings</span></button>
-</nav>
 </div>
+
+</main>
 
 <!-- MODAL -->
 <div id="mo" class="h">
   <div id="mo-b">
-    <div id="mo-h"><span id="mo-t">Info</span><button id="mo-x" onclick="closeModal()">✕</button></div>
+    <div id="mo-h"><span id="mo-t">Info</span><button id="mo-x" onclick="closeModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button></div>
     <div id="mo-bd"></div>
     <div id="mo-f"><button class="btn btn-s" onclick="closeModal()">Close</button></div>
   </div>
 </div>
 
 <!-- TOAST -->
-<div id="toast" class="h"></div>
+<div id="ts" class="h"></div>
 
 <script>
 const WA=window.Telegram?.WebApp
 function getUser(){
-  if(!WA?.initDataUnsafe?.user)return null
+  if(!WA?.initDataUnsafe?.user) return null
   const u=WA.initDataUnsafe.user
   return{id:u.id,fn:u.first_name||'',ln:u.last_name||'',un:u.username||'',lang:u.language_code||'',prem:u.is_premium||false,photo:u.photo_url||''}
 }
 
-const S={pg:'profile',accs:[],msgs:[],pgN:1,pgT:1,selAcc:null,user:null,pass:localStorage.getItem('tmap_pass')||''}
-document.getElementById('inp-pass').value=S.pass
+const S={emails:JSON.parse(localStorage.getItem('tmap_emails')||'[]'),selEmail:localStorage.getItem('tmap_sel')||null,msgs:[],pgN:1,pgT:1}
 
 async function api(m,p){
   const qs=new URLSearchParams({method:m,...(p||{})}).toString()
   try{
     const r=await fetch('/api/proxy?'+qs)
-    if(!r.ok){const e=await r.text();modal('Error',e+'\nStatus: '+r.status);return null}
+    if(!r.ok){const e=await r.text();modal('Error',r.status+' — '+(e?.error||e));return null}
     return await r.json()
   }catch(e){modal('Network Error',e.message);return null}
 }
 
 function toast(t){
-  const el=document.getElementById('toast')
+  const el=document.getElementById('ts')
   el.textContent=t;el.classList.remove('h')
   setTimeout(()=>el.classList.add('h'),2000)
 }
 
-function goSec(el){
-  document.querySelectorAll('.nv').forEach(b=>b.classList.remove('on'))
-  el.classList.add('on')
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'))
-  document.getElementById('sec-'+el.dataset.sec).classList.add('on')
-  S.pg=el.dataset.sec
-  const t={profile:'Profile',inbox:'Inbox',compose:'Generate',settings:'Settings'}
-  document.getElementById('top-title').textContent='Gmail — '+t[S.pg]
-  if(S.pg==='profile')loadProfile()
-  else if(S.pg==='inbox'){renderInboxSel();if(S.selAcc!==null)loadInbox()}
-  else if(S.pg==='compose')document.getElementById('gen-r').classList.add('h')
+function esc(s){
+  if(s===null||s===undefined) return ''
+  const d=document.createElement('div');d.textContent=String(s);return d.innerHTML
 }
 
-function switchTab(el,name){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'))
-  el.classList.add('on')
-  document.querySelectorAll('.tab-v').forEach(v=>v.classList.remove('on'))
-  document.getElementById('tv-'+name).classList.add('on')
-}
-
+/* === MODAL === */
 function modal(t,b,f){
   document.getElementById('mo-t').textContent=t
   document.getElementById('mo-bd').innerHTML=(typeof b==='string'?b.replace(/\n/g,'<br>'):'')
@@ -343,182 +331,197 @@ function modal(t,b,f){
 }
 function closeModal(){document.getElementById('mo').classList.add('h')}
 
+/* === TABS === */
+function swTab(el,n){
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'))
+  el.classList.add('on')
+  document.querySelectorAll('.tv').forEach(v=>v.classList.remove('on'))
+  document.getElementById('tv-'+n).classList.add('on')
+}
+
 /* === PROFILE === */
-async function loadProfile(){
+function loadProfile(){
   const u=getUser()
-  if(u){
-    S.user=u
-    document.getElementById('pfp-nm').textContent=(u.fn+' '+u.ln).trim()||'Unknown'
-    document.getElementById('pfp-un').textContent=u.un?'@'+u.un:'no username'
-    document.getElementById('set-uid').textContent=u.id
-    document.getElementById('set-uname').textContent=u.un||'-'
-    const av=document.getElementById('pfp-av')
-    if(u.photo)av.innerHTML='<img src="'+u.photo+'" alt="av" />'
-    else av.textContent=(u.fn[0]||'?').toUpperCase()
-    const pe=document.getElementById('pfp-prem')
-    if(u.prem){pe.textContent='★ Premium';pe.classList.remove('h')}
-    else pe.classList.add('h')
-    document.getElementById('st-prem').textContent=u.prem?'Premium':'Free'
+  if(!u) return
+  document.getElementById('pf-n').textContent=(u.fn+' '+u.ln).trim()||'Unknown'
+  document.getElementById('pf-u').textContent=u.un?'@'+u.un:'no username'
+  document.getElementById('s-uid').textContent=u.id
+  document.getElementById('s-un').textContent=u.un||'-'
+  const av=document.getElementById('pf-av')
+  if(u.photo) av.innerHTML='<img src="'+u.photo+'" alt="" />'
+  else av.textContent=(u.fn[0]||'?').toUpperCase()
+  const pe=document.getElementById('pf-p')
+  if(u.prem){pe.style.display='inline-block'}else{pe.style.display='none'}
+  document.getElementById('st-st').textContent=u.prem?'Premium':'Free'
+}
+
+/* === EMAIL MANAGEMENT === */
+function saveEmails(){
+  localStorage.setItem('tmap_emails',JSON.stringify(S.emails))
+  localStorage.setItem('tmap_sel',S.selEmail)
+  renderEmails()
+}
+
+function renderEmails(){
+  const el=document.getElementById('ec')
+  const sec=document.getElementById('act-sec')
+  if(!S.emails.length){
+    el.innerHTML='<div class="em">No emails added yet</div>'
+    sec.style.display='none'
+    document.getElementById('st-em').textContent='0'
+    return
   }
-  const d=await api('accounts')
-  if(d&&d.accounts){S.accs=d.accounts;document.getElementById('st-acc').textContent=d.accounts.length}
-  renderAccs()
+  el.innerHTML=S.emails.map((e,i)=>{
+    const act=i===S.selEmail
+    return '<span class="ec-c'+(act?' act':'')+'" onclick="selectEmail('+i+')"><span>'+(act?'&#9654; ':'')+esc(e)+'</span><button class="ec-x" onclick="event.stopPropagation();removeEmail('+i+')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>'
+  }).join('')
+  el.innerHTML+='<span class="ec-a" onclick="addEmail()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add</span>'
+  document.getElementById('st-em').textContent=S.emails.length
+  if(S.selEmail!==null&&S.selEmail<S.emails.length){
+    sec.style.display='block'
+  }else{
+    sec.style.display='none'
+  }
 }
 
-function renderAccs(){
-  const el=document.getElementById('accl')
-  if(!S.accs.length){el.innerHTML='<div class="empt"><i>📭</i>No accounts yet. Generate one!</div>';return}
-  el.innerHTML=S.accs.map((a,i)=>'<div class="ac" onclick="accDetail('+i+')"><span class="ac-e">'+esc(a)+'</span><span class="ac-a">›</span></div>').join('')
+function addEmail(){
+  modal('Add Email','<p style="margin-bottom:8px">Enter a Gmail address:</p><input class="inp" id="ae-inp" placeholder="example@gmail.com" />',
+    '<button class="btn btn-xs btn-p" onclick="doAddEmail()">Add</button> <button class="btn btn-xs" onclick="closeModal()">Cancel</button>')
+  setTimeout(()=>document.getElementById('ae-inp')?.focus(),100)
 }
 
-function accDetail(i){
-  const e=S.accs[i]
-  modal('Account Details','<div style="margin-bottom:12px"><strong style="font-size:12px;color:var(--text2);font-weight:600">EMAIL</strong><br><span style="font-size:16px;font-weight:700;color:var(--primary);word-break:break-all">'+esc(e)+'</span></div>',
-    '<button class="btn btn-xs btn-p" onclick="closeModal();viewInbox('+i+')">📬 View Inbox</button> <button class="btn btn-xs" onclick="closeModal();copyText(\''+esc(e).replace(/'/g,"\\'")+'\')">📋 Copy</button> <button class="btn btn-xs btn-d" onclick="closeModal();confirmDelAcc('+i+')">🗑 Delete</button>')
+function doAddEmail(){
+  const v=document.getElementById('ae-inp')?.value.trim().toLowerCase()
+  if(!v||!v.includes('@')){alert('Enter a valid email');return}
+  if(S.emails.includes(v)){alert('Already added');return}
+  closeModal()
+  S.emails.push(v)
+  S.selEmail=S.emails.length-1
+  S.pgN=1
+  saveEmails()
+  loadInbox()
 }
 
-function viewInbox(i){
-  S.selAcc=i
-  document.querySelector('[data-sec="inbox"]').click()
-  const sel=document.getElementById('ibx-sel')
-  sel.value=i;S.pgN=1;loadInbox()
+function removeEmail(i){
+  S.emails.splice(i,1)
+  if(S.selEmail===i) S.selEmail=S.emails.length?0:null
+  else if(S.selEmail>i) S.selEmail--
+  S.pgN=1
+  saveEmails()
 }
 
-function confirmDelAcc(i){
-  if(confirm('Delete this account?'))modal('Delete','Account deletion is handled via the bot.\nUse /zeron-acc-del in Telegram.')
+function selectEmail(i){
+  S.selEmail=i;S.pgN=1
+  saveEmails()
+  loadInbox()
 }
 
 /* === INBOX === */
-function renderInboxSel(){
-  const sel=document.getElementById('ibx-sel')
-  sel.innerHTML='<option value="">Select account...</option>'
-  S.accs.forEach((a,i)=>{const o=document.createElement('option');o.value=i;o.textContent=a.length>28?a.slice(0,25)+'...':a;sel.appendChild(o)})
-  if(S.selAcc!==null&&S.selAcc<S.accs.length)sel.value=S.selAcc
-}
-
-function onAccChange(){
-  const v=document.getElementById('ibx-sel').value
-  if(v===''){S.selAcc=null;document.getElementById('ibx-l').innerHTML='<div class="empt"><i>📭</i>Select an account</div>';return}
-  S.selAcc=parseInt(v);S.pgN=1;loadInbox()
-}
-
 async function loadInbox(){
-  const el=document.getElementById('ibx-l')
-  if(S.selAcc===null||!S.accs[S.selAcc]){el.innerHTML='<div class="empt"><i>📭</i>Select an account</div>';return}
-  el.innerHTML='<div class="empt">Loading...</div>'
-  const d=await api('read',{email:S.accs[S.selAcc],page:S.pgN})
-  if(!d){el.innerHTML='<div class="empt" style="color:var(--red)">Failed to load inbox</div>';return}
-  S.msgs=d.messages||[]
-  S.pgT=d.total_pages||1
-  document.getElementById('ibx-pg').textContent='Page '+S.pgN+'/'+S.pgT
-  if(!S.msgs.length){el.innerHTML='<div class="empt"><i>📭</i>Inbox is empty</div>';return}
-  el.innerHTML=S.msgs.map((m,i)=>'<div class="msg" onclick="viewMsg('+i+')"><div class="msg-s">'+esc(m.subject||'(No subject)')+'</div><div class="msg-f"><span class="msg-em">'+esc(m.from||'?')+'</span> · '+esc(m.date||'')+'</div>'+(m.snippet?'<div class="msg-sn">'+esc(m.snippet)+'</div>':'')+'</div>').join('')
+  const el=document.getElementById('ix-l')
+  if(S.selEmail===null||!S.emails[S.selEmail]){el.innerHTML='<div class="em">Select an email</div>';return}
+  el.innerHTML='<div class="em">Loading...</div>'
+  const d=await api('read',{email:S.emails[S.selEmail]})
+  if(!d){el.innerHTML='<div class="em" style="color:var(--red)">Failed to load inbox</div>';return}
+  S.msgs=d.messages||d.data||d||[]
+  S.pgT=1
+  document.getElementById('ix-pg').textContent='1/1'
+  document.getElementById('st-ms').textContent=S.msgs.length
+  if(!Array.isArray(S.msgs)||!S.msgs.length){el.innerHTML='<div class="em">Inbox is empty</div>';return}
+  el.innerHTML=S.msgs.map((m,i)=>'<div class="ms" onclick="viewMsg('+i+')"><div class="ms-s">'+esc(m.subject||'(No subject)')+'</div><div class="ms-f">'+esc(m.from||'?')+'</div>'+(m.snippet?'<div class="ms-sn">'+esc(m.snippet)+'</div>':'')+'</div>').join('')
 }
 
-function prevPage(){if(S.pgN>1){S.pgN--;loadInbox()}}
-function nextPage(){if(S.pgN<S.pgT){S.pgN++;loadInbox()}}
+function pg(d){/* pagination if API supports */}
 
 async function doSearch(){
-  const q=document.getElementById('srch-q').value.trim()
-  const el=document.getElementById('srch-l')
-  if(!q){el.innerHTML='<div class="empt"><i>🔍</i>Enter a query</div>';return}
-  el.innerHTML='<div class="empt">Searching...</div>'
-  const d=await api('search',{query:q})
-  if(!d){el.innerHTML='<div class="empt" style="color:var(--red)">Search failed</div>';return}
-  const ms=d.messages||d.results||[]
-  if(!ms.length){el.innerHTML='<div class="empt"><i>🔍</i>No results found</div>';return}
-  el.innerHTML=ms.map((m,i)=>'<div class="msg" onclick="viewMsgData('+i+')"><div class="msg-s">'+esc(m.subject||'(No subject)')+'</div><div class="msg-f"><span class="msg-em">'+esc(m.from||'?')+'</span></div>'+(m.snippet?'<div class="msg-sn">'+esc(m.snippet)+'</div>':'')+'</div>').join('')
-  window._srchMsgs=ms
+  const q=document.getElementById('sq').value.trim()
+  const el=document.getElementById('sl')
+  if(!q||S.selEmail===null){el.innerHTML='<div class="em">Enter a query</div>';return}
+  el.innerHTML='<div class="em">Searching...</div>'
+  const d=await api('search',{email:S.emails[S.selEmail],query:q})
+  if(!d){el.innerHTML='<div class="em" style="color:var(--red)">Search failed</div>';return}
+  const ms=d.messages||d.data||d||[]
+  if(!Array.isArray(ms)||!ms.length){el.innerHTML='<div class="em">No results</div>';return}
+  el.innerHTML=ms.map((m,i)=>'<div class="ms" onclick="viewMsgData('+i+')"><div class="ms-s">'+esc(m.subject||'(No subject)')+'</div><div class="ms-f">'+esc(m.from||'?')+'</div></div>').join('')
+  window._sr=ms
 }
-function viewMsgData(i){const m=window._srchMsgs[i];showMsg(m)}
+function viewMsgData(i){showMsg(window._sr[i])}
 function viewMsg(i){showMsg(S.msgs[i])}
 
 function showMsg(m){
   const body=m.body||m.snippet||'(No content)'
   modal(esc(m.subject||'(No subject)'),
-    '<div style="margin-bottom:12px"><div style="color:var(--text2);font-size:12px;margin-bottom:2px">From: <strong style="color:var(--text)">'+esc(m.from||'?')+'</strong></div><div style="color:var(--text2);font-size:12px">Date: '+esc(m.date||'?')+'</div></div><div style="border-top:1px solid var(--border);padding-top:12px;margin-bottom:12px"><pre style="white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:13px;color:var(--text2);line-height:1.6;margin:0">'+esc(body)+'</pre></div>',
-    '<button class="btn btn-xs btn-d" onclick="closeModal();confirmDelMsg()">🗑 Delete</button> <button class="btn btn-xs" onclick="closeModal()">Close</button>')
+    '<div style="margin-bottom:12px"><div style="color:var(--text2);font-size:12px">From: <strong style="color:var(--text)">'+esc(m.from||'?')+'</strong></div><div style="color:var(--text2);font-size:12px">Date: '+esc(m.date||'?')+'</div></div><div style="border-top:1px solid var(--border);padding-top:12px"><pre style="white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:13px;color:var(--text2);line-height:1.6;margin:0">'+esc(body)+'</pre></div>',
+    '<button class="btn btn-xs btn-d" onclick="closeModal();delMsg(\''+esc((m.uid||m.id||'').replace(/'/g,"\\'"))+'\')">Delete</button> <button class="btn btn-xs" onclick="closeModal()">Close</button>')
 }
-function confirmDelMsg(){
-  if(confirm('Delete this message?'))modal('Delete','Message deletion is handled via the bot.\nUse /zeron-delete in Telegram.')
+
+async function delMsg(uid){
+  if(!uid||uid===''){modal('Delete','Deletion requires a UID. Use /zeron-delete in Telegram.');return}
+  if(!confirm('Delete this message?')) return
+  const d=await api('delete',{uid})
+  if(d&&(d.status===true||d.status===200||d.raw==='true')) toast('Deleted!')
+  else toast('Delete failed. Use bot command.')
 }
 
 /* === GENERATE === */
 async function gen(t){
-  const el=document.getElementById('gen-r');const te=document.getElementById('gen-t')
-  el.classList.remove('h');te.textContent='Generating...'
+  document.getElementById('gr').style.display='block'
+  document.getElementById('gt').textContent='Generating...'
   const d=await api('generate',{type:t})
-  if(!d){te.textContent='Generation failed';return}
-  te.textContent=d.email||d.result||JSON.stringify(d)
+  if(!d){document.getElementById('gt').textContent='Generation failed';return}
+  document.getElementById('gt').textContent=d.email||d.result||JSON.stringify(d)
 }
 
 function customGen(){
-  modal('Custom Generate','<p style="margin-bottom:8px">Enter base email or custom parameters:</p><input class="inp" id="cg-inp" placeholder="e.g. base.email" />',
-    '<button class="btn btn-xs btn-p" onclick="doCustomGen()">Generate</button> <button class="btn btn-xs" onclick="closeModal()">Cancel</button>')
+  modal('Custom Generate','<p style="margin-bottom:8px">Enter base or custom params:</p><input class="inp" id="cg-inp" placeholder="e.g. base.email" />',
+    '<button class="btn btn-xs btn-p" onclick="doCG()">Generate</button> <button class="btn btn-xs" onclick="closeModal()">Cancel</button>')
 }
-async function doCustomGen(){
-  const inp=document.getElementById('cg-inp')?.value.trim()
-  if(!inp){alert('Enter something!');return}
+async function doCG(){
+  const v=document.getElementById('cg-inp')?.value.trim()
+  if(!v){alert('Enter something');return}
   closeModal()
-  const el=document.getElementById('gen-r');const te=document.getElementById('gen-t')
-  el.classList.remove('h');te.textContent='Generating...'
-  const d=await api('generate',{custom:inp})
-  if(!d){te.textContent='Generation failed';return}
-  te.textContent=d.email||d.result||JSON.stringify(d)
+  document.getElementById('gr').style.display='block'
+  document.getElementById('gt').textContent='Generating...'
+  const d=await api('generate',{custom:v})
+  if(!d){document.getElementById('gt').textContent='Generation failed';return}
+  document.getElementById('gt').textContent=d.email||d.result||JSON.stringify(d)
 }
 
-async function copyResult(){
-  const t=document.getElementById('gen-t').textContent
-  if(!t||t==='Generating...'||t==='Generation failed')return
-  try{await navigator.clipboard.writeText(t);toast('Copied to clipboard!')}catch{}
+async function copyRes(){
+  const t=document.getElementById('gt').textContent
+  if(!t||t==='Generating...'||t==='Generation failed') return
+  try{await navigator.clipboard.writeText(t);toast('Copied!')}catch{}
 }
 
 /* === SETTINGS === */
-function savePass(){
-  const p=document.getElementById('inp-pass').value.trim()
-  if(!p){alert('Enter a password!');return}
-  S.pass=p;localStorage.setItem('tmap_pass',p);toast('Password saved!')
-}
-
 async function doExport(){
-  const d=await api('export')
-  if(!d)return
-  const txt=d.data||d.accounts||JSON.stringify(d,null,2)
-  modal('Export','<pre style="font-size:12px">'+esc(JSON.stringify(txt,null,2))+'</pre>')
+  modal('Export','Emails are stored locally.\n<pre style="font-size:12px">'+esc(JSON.stringify(S.emails,null,2))+'</pre>')
 }
 
 function showTut(){
-  modal('Tutorial',
-    '<h3>How to Use Tmap Gmail</h3><p><strong>1. Generate</strong> — Create temporary Gmail addresses using Dot Trick, Plus Alias, or Mixed methods. Each method creates unique variations of your base email.</p><p><strong>2. Inbox</strong> — Select an account to view received emails. Use the search tab to find specific messages across accounts.</p><p><strong>3. Delete</strong> — Remove accounts or messages via the bot commands in Telegram.</p><p><strong>4. Export</strong> — Export your account list as JSON from the Settings page.</p><p>Quick commands: /zeron-generate, /zeron-accounts, /zeron-inbox, /zeron-delete</p>')
+  modal('How to Use',
+    '<h3>Tmap Gmail Mini App</h3><p><strong>1. Add Email</strong> — Tap "+ Add" and paste your Gmail address.</p><p><strong>2. View Inbox</strong> — Tap an email chip to load its inbox. Read messages by tapping them.</p><p><strong>3. Search</strong> — Switch to Search tab to find specific messages.</p><p><strong>4. Generate</strong> — Create new temporary Gmail addresses via Dot Trick, Plus Alias, Mixed.</p><p><strong>5. Delete</strong> — Delete messages from the message view.</p><hr style="border-color:var(--border);margin:12px 0"><p style="font-size:12px">Bot commands: /zeron-generate, /zeron-accounts, /zeron-inbox, /zeron-delete</p>')
 }
 
 function showDev(){
   modal('Developer',
-    '<h3>Tmap Gmail Bot</h3><p><strong>Created by</strong> @CodeDevZeron</p><p><strong>Channel</strong> @ZeronHub</p><p><strong>Stack</strong> TBC Telegram Bot Controller + Gmail API</p><p><strong>Mini App</strong> Clean flat design — Telegram Mini App</p><p><strong>Version</strong> 1.0.0</p>')
+    '<h3>Tmap Gmail</h3><p><strong>Creator</strong> @CodeDevZeron</p><p><strong>Channel</strong> @ZeronHub</p><p><strong>Stack</strong> TBC Bot Controller + Gmail API</p><p><strong>Design</strong> Clean flat — Telegram Mini App</p><p><strong>Version</strong> 1.0.0</p>')
 }
 
 function openMenu(){
   modal('Tmap Gmail',
-    '<p style="margin-bottom:8px;color:var(--text);font-weight:600">Quick Navigation</p>'+
-    '<button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal();document.querySelector(\'[data-sec=\\\'profile\\\']\').click()">👤 Profile</button>'+
-    '<button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal();document.querySelector(\'[data-sec=\\\'inbox\\\']\').click()">📬 Inbox</button>'+
-    '<button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal();document.querySelector(\'[data-sec=\\\'compose\\\']\').click()">➕ Generate</button>'+
-    '<button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal();document.querySelector(\'[data-sec=\\\'settings\\\']\').click()">⚙️ Settings</button>')
-}
-
-/* === UTILS === */
-function esc(s){
-  if(s===null||s===undefined)return''
-  const d=document.createElement('div');d.textContent=String(s);return d.innerHTML
-}
-function copyText(t){
-  try{navigator.clipboard.writeText(t);toast('Copied!')}catch{}
+    '<p style="color:var(--text);font-weight:600;margin-bottom:8px">Quick Navigation</p>'+
+    '<p><button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal()">Profile</button></p>'+
+    '<p><button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal()">Inbox</button></p>'+
+    '<p><button class="btn btn-s" style="width:100%;margin-bottom:6px" onclick="closeModal()">Generate</button></p>')
 }
 
 /* === INIT === */
 WA?.ready()
 WA?.expand()
 loadProfile()
+renderEmails()
+if(S.selEmail!==null&&S.emails[S.selEmail]) loadInbox()
 </script>
 </body>
 </html>

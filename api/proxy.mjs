@@ -2,7 +2,7 @@ const BACKEND = 'https://zeron-gmail.vercel.app'
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
   if (req.method === 'OPTIONS') {
@@ -12,35 +12,42 @@ export default async function handler(req, res) {
 
   const pass = process.env.APP_PASS
   if (!pass) {
-    res.status(500).json({ error: 'APP_PASS not configured on server' })
+    res.status(500).json({ error: 'APP_PASS not configured' })
     return
   }
 
-  const method = req.query.method || ''
-  if (!method) {
-    res.status(400).json({ error: 'method parameter required' })
-    return
+  const { method, email, query, type, uid } = req.query
+
+  let url
+  switch (method) {
+    case 'read':
+      if (!email) return res.status(400).json({ error: 'email required' })
+      url = `${BACKEND}/api/read/${encodeURIComponent(email)}`
+      break
+    case 'search':
+      if (!email || !query) return res.status(400).json({ error: 'email and query required' })
+      url = `${BACKEND}/api/readby/${encodeURIComponent(email)}/${encodeURIComponent(query)}`
+      break
+    case 'generate':
+      if (!type) return res.status(400).json({ error: 'type required (dot/plus/mixed)' })
+      url = `${BACKEND}/api/generate/${type}`
+      break
+    case 'delete':
+      if (!uid) return res.status(400).json({ error: 'uid required' })
+      url = `${BACKEND}/api/delete/${encodeURIComponent(uid)}`
+      break
+    default:
+      return res.status(400).json({ error: `unknown method: ${method}` })
   }
-
-  const params = { ...req.query }
-  delete params.method
-
-  const qs = new URLSearchParams(params).toString()
-  const url = `${BACKEND}/api/${method}${qs ? '?' + qs : ''}`
 
   try {
     const r = await fetch(url, {
       headers: { Authorization: `Bearer ${pass}` }
     })
-
-    if (!r.ok) {
-      const text = await r.text()
-      res.status(r.status).json({ error: text, status: r.status })
-      return
-    }
-
-    const data = await r.json()
-    res.status(200).json(data)
+    const text = await r.text()
+    let data
+    try { data = JSON.parse(text) } catch { data = { raw: text } }
+    res.status(r.ok ? 200 : r.status).json(data)
   } catch (e) {
     res.status(500).json({ error: e.message })
   }
