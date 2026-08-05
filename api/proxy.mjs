@@ -38,7 +38,9 @@ function verifyInitData(initData, botToken) {
     const dataCheck = keys.map(k => `${k}=${params.get(k)}`).join('\n')
     const secretKey = createHmac('sha256', botToken).update('WebAppData').digest()
     const computed = createHmac('sha256', secretKey).update(dataCheck).digest('hex')
-    return timingSafeEqual(Buffer.from(computed), Buffer.from(hash))
+    const a = Buffer.from(computed), b = Buffer.from(hash)
+    if (a.length !== b.length) return false
+    return timingSafeEqual(a, b)
   } catch { return false }
 }
 
@@ -63,9 +65,9 @@ export default async function handler(req, res) {
     return res.status(429).json({ error: 'rate limit exceeded, slow down' })
   }
 
-  // Require a valid Telegram WebApp initData. Without a bot token we still
-  // demand the header exists (blocks direct curl/scraping reuse).
-  const initData = req.headers['x-telegram-initdata'] || ''
+  // Require a valid Telegram WebApp initData. Accept from query param (encodeURIComponent,
+  // corruption-proof) or header. Without a bot token we still demand initData exists.
+  const initData = req.query.initData || req.headers['x-telegram-initdata'] || ''
   const botToken = process.env.TELEGRAM_BOT_TOKEN || ''
   if (botToken) {
     if (!verifyInitData(initData, botToken)) {
