@@ -2,516 +2,341 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
 <meta name="theme-color" content="#0D9488" />
-<title>Tmap Gmail</title>
+<title>Zeron Temp Mail</title>
 <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#F0FDFA;--card:#fff;--primary:#0D9488;--primary-l:#0F766E;--primary-bg:#CCFBF1;
-  --accent:#EA580C;--accent-bg:#FFF7ED;--red:#DC2626;--red-bg:#FEF2F2;
-  --text:#134E4A;--text2:#3D6B6A;--text3:#64748B;--text4:#94A3B8;
-  --border:#A7F3D0;--b2:#6EE7B7;--b3:#D1FAE5;
-  --r:16px;--rs:10px;--font:'DM Sans',system-ui,-apple-system,sans-serif;
+  --bg:#F0FDFA; --card:#FFFFFF; --card-2:#E8FAF6; --text:#134E4A; --text2:#3D6B6A;
+  --text3:#5B8A86; --hint:#94A3B8; --line:#A7F3D0; --primary:#0D9488; --primary-2:#0F766E;
+  --primary-bg:#CCFBF1; --accent:#F97316; --accent-bg:#FFF3E8; --red:#DC2626; --red-bg:#FEF2F2;
+  --r:18px; --rs:12px; --rsm:9px;
+  --font:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
 }
 html{height:100%}
-body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 40px 0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--primary);color:#fff}
-::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px}
-
-/* LAYOUT */
-.w{max-width:480px;margin:0 auto;padding:0 18px}
-
-/* HEADER */
-.hd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
-.hd-l{display:flex;align-items:center;gap:10px}
-.hd-b{background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.3px}
-.hd-t{font-size:17px;font-weight:600;color:var(--text)}
-.hd-r{background:none;border:none;color:var(--text2);padding:6px;border-radius:var(--rs);cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;transition:background .15s}
-.hd-r:hover{background:var(--bg)}
-
-/* CARD */
-.card{background:var(--card);border-radius:var(--r);padding:20px;margin-bottom:14px}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-weight:600;cursor:pointer;border:none;border-radius:var(--rs);transition:all .15s ease;white-space:nowrap;min-height:44px;min-width:44px}
+::-webkit-scrollbar-thumb{background:var(--primary-bg);border-radius:4px}
+.app{max-width:520px;margin:0 auto;min-height:100vh;padding:calc(var(--safe-t) + 0px) 0 calc(var(--safe-b) + 80px);position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.hd-l{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(13,148,136,.28)}
+.logo svg{width:20px;height:20px}
+.hd-t{font-size:16px;font-weight:800;letter-spacing:-.2px;white-space:nowrap}
+.hd-s{font-size:11px;color:var(--text3);font-weight:600;margin-top:-2px}
+.hd-r{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.av{width:36px;height:36px;border-radius:50%;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;border:2px solid var(--card);overflow:hidden;flex-shrink:0}
+.av img{width:100%;height:100%;object-fit:cover}
+.prem{background:linear-gradient(135deg,#6A5ACD,#9B59B6);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;letter-spacing:.4px}
+.sc{display:none;padding:6px 18px 20px;animation:scIn .22s ease}
+.sc.on{display:block}
+@keyframes scIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:0 1px 3px rgba(13,148,136,.05),0 8px 24px -12px rgba(13,148,136,.12)}
+.card h2{font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.grow{flex:1;min-width:0}
+.hero{position:relative;border-radius:22px;padding:22px 20px;color:#fff;margin-bottom:14px;overflow:hidden;background:linear-gradient(135deg,#0D9488 0%,#0F766E 55%,#115E59 100%)}
+.hero::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero::after{content:"";position:absolute;bottom:-60px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
+.hero *{position:relative;z-index:1}
+.hero h1{font-size:21px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px}
+.hero p{font-size:13px;opacity:.9;font-weight:500;margin-bottom:16px}
+.hero .pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:6px 12px;font-size:11px;font-weight:700;backdrop-filter:blur(6px)}
+.hero .pill svg{width:12px;height:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border-radius:var(--rs);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(13,148,136,.05)}
+.stat-i{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-i svg{width:19px;height:19px}
+.stat-n{font-size:19px;font-weight:800;letter-spacing:-.3px;line-height:1.1}
+.stat-l{font-size:11px;color:var(--text3);font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-weight:700;cursor:pointer;border:none;border-radius:var(--rsm);transition:all .15s ease;white-space:nowrap;min-height:44px;color:var(--text);background:var(--card)}
+.btn svg{width:18px;height:18px;flex-shrink:0}
 .btn:active{transform:scale(.97)}
-.btn-p{background:var(--primary);color:#fff;padding:14px 28px;font-size:15px;border-radius:12px;box-shadow:0 2px 8px rgba(13,148,136,.2)}
-.btn-p:hover{background:var(--primary-l);box-shadow:0 4px 12px rgba(13,148,136,.25)}
-.btn-p:active{transform:scale(.97);box-shadow:0 1px 4px rgba(13,148,136,.15)}
-.btn-p svg{stroke:#fff;width:20px;height:20px}
-.btn-s{background:var(--card);color:var(--text);padding:10px 18px;font-size:14px;border:1px solid var(--border);min-height:44px}
-.btn-s:hover{background:var(--bg);border-color:var(--b2)}
-.btn-xs{padding:8px 14px;font-size:13px;border-radius:8px;min-height:44px}
-.btn-d{color:var(--red);border:1px solid var(--red);background:var(--card);min-height:44px}
-.btn-d:hover{background:var(--red);color:#fff}
-.btn:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
-
-/* HERO */
-.hero{text-align:center;padding:24px 0 8px}
-.hero h1{font-size:20px;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
-.hero p{font-size:14px;color:var(--text2);font-weight:400;margin-bottom:20px}
-
-/* ALIAS CHIPS */
-.ac{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
-.ac-i{display:inline-flex;align-items:center;gap:6px;background:var(--primary-bg);color:var(--primary);border-radius:20px;padding:7px 12px 7px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;border:1.5px solid transparent}
-.ac-i:hover{border-color:var(--primary);background:var(--card)}
-.ac-i.act{background:var(--primary);color:#fff;border-color:var(--primary)}
-.ac-i.act svg{stroke:#fff}
-.ac-x{background:none;border:none;cursor:pointer;padding:10px;display:flex;align-items:center;border-radius:50%;color:inherit;opacity:.6;transition:opacity .12s;min-width:44px;min-height:44px}
-.ac-x:hover{opacity:1}
-.ac-a{display:inline-flex;align-items:center;gap:6px;border:1.5px dashed var(--b2);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .12s;color:var(--text2);background:transparent}
-.ac-a:hover{border-color:var(--primary);color:var(--primary)}
-
-/* TABS */
-.tr{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:16px}
-.tb{flex:1;padding:10px 12px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border:none;border-radius:8px;background:transparent;color:var(--text2);transition:all .15s;min-height:44px}
-.tb.on{background:var(--card);color:var(--primary);box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.tv{display:none;opacity:0;transform:translateY(4px)}
-.tv.on{display:block;opacity:1;transform:translateY(0);transition:opacity .2s ease,transform .2s ease}
-
-/* TAB: GENERATE */
-.ge{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.gc{padding:18px 8px;text-align:center;cursor:pointer;background:var(--card);border:1px solid var(--border);border-radius:12px;font-family:var(--font);transition:all .12s}
-.gc:hover{border-color:var(--primary);box-shadow:0 2px 8px rgba(13,148,136,.08)}
-.gc-i{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-l));margin:0 auto 8px;color:#fff}
-.gc-l{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
-.gc-d{display:block;font-size:10px;color:var(--text3);font-weight:400}
-.gc.c{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 16px;width:100%;margin-top:10px}
-.gc.c .gc-i{margin:0;flex-shrink:0}
-#gr{display:none;margin-top:16px}
-#gr pre{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-family:'SF Mono',Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;margin-top:8px;color:var(--text)}
-
-/* SEARCH BAR */
-.sr-b{display:flex;gap:8px;align-items:center}
-.sr-b input{flex:1}
-
-/* EMPTY STATE */
-.em{padding:32px 16px;text-align:center;color:var(--text3);font-size:14px;font-weight:500}
-.em-i{display:flex;justify-content:center;margin-bottom:10px}
-
-/* MESSAGE LIST */
-.ml{display:flex;flex-direction:column;gap:8px}
-.ms{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .15s;min-height:44px}
-.ms:active{transform:scale(.98)}
-.ms:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
-.ms-s{font-size:15px;font-weight:600;margin-bottom:4px}
-.ms-f{font-size:13px;color:var(--text2);font-weight:400}
-.ms-sn{font-size:13px;color:var(--text3);margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:400}
-
-/* SETTINGS ROW */
-.sg .si{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
-.sg .si:last-child{border-bottom:none}
-.si-l{font-weight:500;color:var(--text2)}
-.si-v{color:var(--text);font-weight:500;text-align:right}
-
-/* SR-ONLY (screen reader) */
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-
-/* ACCESSIBILITY */
-.skip-link{position:absolute;top:-100px;left:16px;background:var(--primary);color:#fff;padding:8px 16px;border-radius:var(--rs);z-index:100;font-size:13px;font-weight:600;text-decoration:none}
-.skip-link:focus{top:16px}
-:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:4px}
-
-/* REDUCED MOTION */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-}
-
-/* SKELETON */
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.sk{background:linear-gradient(90deg,var(--bg) 25%,var(--b2) 50%,var(--bg) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--rs)}
-
-/* TOAST - ARIA LIVE */
-#ts[role="status"]{position:fixed}
-
-/* CARD - subtle depth */
-.card{background:var(--card);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(13,148,136,.06)}
-
-/* TAB TRANSITIONS */
-.tv{transition:opacity .2s ease}
-.tv.fade-in{animation:fadeIn .2s ease forwards}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-
-/* MODAL */
-#mo{position:fixed;inset:0;background:rgba(15,23,42,.4);display:flex;align-items:center;justify-content:center;z-index:999;padding:24px;backdrop-filter:blur(6px)}
-#mo.h{display:none}
-#mo-b{width:100%;max-width:400px;max-height:85vh;background:var(--card);border-radius:var(--r);box-shadow:0 25px 60px rgba(0,0,0,.15);display:flex;flex-direction:column}
-#mo-h{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
-#mo-t{font-size:16px;font-weight:700}
-#mo-x{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:6px;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
-#mo-x:hover{background:var(--bg);color:var(--text)}
-#mo-bd{padding:20px;overflow-y:auto;font-size:14px;color:var(--text2);line-height:1.6}
-#mo-bd h3{font-size:15px;font-weight:700;color:var(--text);margin:0 0 8px}
-#mo-bd p{margin-bottom:12px}
-#mo-bd code{background:var(--primary-bg);padding:2px 8px;border-radius:4px;font-size:13px;color:var(--primary);font-weight:600}
-#mo-bd pre{background:var(--bg);padding:12px;border-radius:var(--rs);font-size:12px;margin:12px 0;overflow-x:auto;font-family:'SF Mono',Consolas,monospace}
-#mo-f{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
-
-/* SPINNER */
-.sp{display:inline-block;width:18px;height:18px;border:2.5px solid var(--b2);border-top-color:var(--primary);border-radius:50%;animation:spin .6s linear infinite}
+.btn:disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+.btn-p{background:var(--primary);color:#fff;box-shadow:0 4px 14px rgba(13,148,136,.28);width:100%}
+.btn-p:active{box-shadow:0 1px 4px rgba(13,148,136,.2)}
+.btn-s{background:var(--card-2);color:var(--primary);border:1px solid var(--line)}
+.btn-d{background:var(--red-bg);color:var(--red)}
+.btn-xs{padding:0 14px;font-size:13px;min-height:38px;border-radius:var(--rsm)}
+.ge{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gc{padding:16px 12px;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:var(--rsm);font-family:var(--font);transition:all .15s;min-height:44px;display:flex;align-items:center;gap:11px}
+.gc:hover{border-color:var(--primary);box-shadow:0 4px 14px rgba(13,148,136,.1)}
+.gc-i{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.gc-i svg{width:18px;height:18px}
+.gc-l{display:block;font-size:13px;font-weight:700;line-height:1.2}
+.gc-d{display:block;font-size:10.5px;color:var(--text3);font-weight:500}
+#gr{display:none}
+.result{margin-top:14px;background:var(--card-2);border:1.5px dashed var(--primary);border-radius:var(--rs);padding:14px}
+.result-t{font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.result-e{font-family:'SF Mono',Consolas,monospace;font-size:13.5px;font-weight:600;color:var(--text);word-break:break-all;margin-bottom:10px}
+.rbtns{display:flex;gap:8px}
+.rbtns .btn{flex:1;font-size:13px}
+.ib{background:var(--card);color:var(--text);border:1.5px solid var(--line);padding:12px 16px;font-family:var(--font);font-size:14px;font-weight:500;outline:none;border-radius:var(--rsm);transition:border .15s,box-shadow .15s;width:100%;min-height:44px}
+.ib:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+.ib.err{border-color:var(--red);background:var(--red-bg)}
+.ib::placeholder{color:var(--hint);font-weight:400}
+.sr-b{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.sr-b .ib{flex:1}
+.ac{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ac::-webkit-scrollbar{display:none}
+.ac-i{display:inline-flex;align-items:center;gap:6px;background:var(--card);color:var(--text);border:1.5px solid var(--line);border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0;white-space:nowrap}
+.ac-i.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.ac-i .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.ac-i.on .dot{background:#fff}
+.ac-a{display:inline-flex;align-items:center;gap:5px;border:1.5px dashed var(--primary);border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--primary);background:transparent;flex-shrink:0;white-space:nowrap}
+.ac-a svg{width:14px;height:14px}
+.ml{display:flex;flex-direction:column;gap:9px}
+.ms{display:flex;gap:12px;background:var(--card);border:1.5px solid var(--line);border-radius:var(--rs);padding:13px 14px;cursor:pointer;transition:all .15s;align-items:flex-start}
+.ms:active{transform:scale(.98);border-color:var(--primary)}
+.ms-ic{width:40px;height:40px;border-radius:12px;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:15px}
+.ms-b{flex:1;min-width:0}
+.ms-s{font-size:14.5px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ms-f{font-size:12.5px;color:var(--text2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ms-sn{font-size:12px;color:var(--text3);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ms-d{font-size:10.5px;color:var(--hint);font-weight:600;flex-shrink:0;margin-top:2px}
+.em{padding:34px 16px;text-align:center;color:var(--text3);font-size:13.5px;font-weight:500}
+.em-i{width:56px;height:56px;border-radius:18px;background:var(--card-2);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--primary)}
+.em-i svg{width:26px;height:26px}
+.si{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 2px;border-bottom:1px solid var(--line);font-size:13.5px}
+.si:last-child{border-bottom:none}
+.si-l{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--text2)}
+.si-l svg{width:17px;height:17px;color:var(--primary)}
+.si-v{color:var(--text);font-weight:600;text-align:right;font-size:12.5px}
+#ts{position:fixed;left:50%;bottom:calc(var(--safe-b) + 88px);transform:translateX(-50%) translateY(12px);background:var(--text);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 10px 30px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:all .25s ease;max-width:86vw;text-align:center}
+#ts.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#ts.err{background:var(--red)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:50;max-width:520px;margin:0 auto;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;padding:8px 8px calc(var(--safe-b) + 8px)}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--hint);font-family:var(--font);font-size:10px;font-weight:600;padding:7px 4px;border-radius:12px;transition:color .15s;min-height:44px}
+.nav button svg{width:21px;height:21px}
+.nav button.on{color:var(--primary)}
+.nav button.on .nind{background:var(--primary)}
+.nind{width:4px;height:4px;border-radius:2px;background:transparent;margin-top:1px;transition:background .15s}
+.sp{display:inline-block;width:16px;height:16px;border:2.5px solid var(--line);border-top-color:var(--primary);border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* INPUT ERROR */
-.ib{background:var(--card);color:var(--text);border:1.5px dashed var(--b2);padding:10px 14px;font-family:var(--font);font-size:14px;outline:none;border-radius:20px;transition:border .15s;width:100%;min-height:44px}
-.ib:focus{border-color:var(--primary);border-style:solid}
-.ib.err{border-color:var(--red);border-style:solid;background:var(--red-bg)}
-.ib::placeholder{color:var(--text4);font-weight:400;font-size:14px}
-.i-h{font-size:12px;color:var(--red);margin-top:4px;display:none;font-weight:500}
-.i-h.show{display:block}
-
-/* HEADER BTN MIN SIZE */
-.hd-r{min-width:44px;min-height:44px}
-
-@media(max-width:400px){
-  .ge{grid-template-columns:1fr}
-  .hero h1{font-size:18px}
-}
+@media(max-width:380px){.ge{grid-template-columns:1fr}.hero h1{font-size:19px}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
-  <a href="#main" class="skip-link">Skip to main content</a>
-
-<!-- HEADER -->
-<header class="hd" role="banner">
-  <div class="hd-l">
-    <span class="hd-b" aria-label="Tmap brand">TMAP</span>
-    <span class="hd-t">Gmail</span>
-  </div>
-  <button class="hd-r" onclick="openMenu()" aria-label="Open menu">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-  </button>
-</header>
-
-<main class="w" id="main" role="main" aria-label="Gmail alias manager">
-
-<!-- HERO -->
-<div class="hero">
-  <h1>Temporary Gmail</h1>
-  <p>Generate disposable aliases and manage your inbox</p>
-  <button class="btn btn-p" id="btn-new-alias" onclick="gen()" aria-label="Generate new email alias">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-    New Alias
-  </button>
-</div>
-
-<!-- INBOX CARD -->
-<div class="card" id="inbox-card">
-  <!-- ALIASES -->
-  <div id="aliases-sec" aria-label="Saved email aliases">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <h2 style="font-size:14px;font-weight:600">Saved Aliases</h2>
-    </div>
-    <div id="ac" class="ac" role="list" aria-label="Alias list"><div class="em">No aliases yet</div></div>
-    <div class="manual" style="flex-direction:column;gap:6px">
-      <label for="manual-email" class="sr-only">Email address</label>
-      <input id="manual-email" class="ib" type="email" placeholder="Type any email to check..." aria-label="Enter email address to check inbox" aria-describedby="manual-error" />
-      <span id="manual-error" class="i-h" role="alert"></span>
-      <button class="btn btn-xs btn-s" onclick="checkManual()" aria-label="Check inbox for entered email">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- TABS (shown when alias selected) -->
-  <div id="tabs-sec" style="display:none;margin-top:16px">
-    <div class="tr">
-      <button class="tb on" data-tab="inbox" onclick="swTab(this,'inbox')">Inbox</button>
-      <button class="tb" data-tab="search" onclick="swTab(this,'search')">Search</button>
-      <button class="tb" data-tab="gen" onclick="swTab(this,'gen')">Generate</button>
-    </div>
-
-    <div id="tv-inbox" class="tv on">
-      <div id="ix-l" class="ml"><div class="em">Select an alias</div></div>
-    </div>
-
-    <div id="tv-search" class="tv">
-      <div class="sr-b" role="search" aria-label="Search messages">
-        <label for="sq" class="sr-only">Search messages</label>
-        <input id="sq" class="ib" type="search" placeholder="Search messages..." onkeydown="if(event.key==='Enter')doSearch()" aria-label="Search messages" />
-        <button class="btn btn-xs btn-s" onclick="doSearch()" aria-label="Run search">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
-      </div>
-      <div id="sl" class="ml" style="margin-top:12px" role="list" aria-label="Search results"><div class="em">Enter a query</div></div>
-    </div>
-
-    <div id="tv-gen" class="tv">
-      <div class="ge">
-        <button class="gc" onclick="genType('dot')"><div class="gc-i">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
-        </div><span class="gc-l">Dot</span><span class="gc-d">user.name@</span></button>
-        <button class="gc" onclick="genType('plus')"><div class="gc-i">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </div><span class="gc-l">Plus</span><span class="gc-d">user+tag@</span></button>
-        <button class="gc" onclick="genType('dotplus')"><div class="gc-i">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"/><line x1="12" y1="5" x2="12" y2="3"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="5" y1="12" x2="3" y2="12"/><line x1="19" y1="12" x2="21" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        </div><span class="gc-l">Dot+</span><span class="gc-d">Plus variation</span></button>
-      </div>
-      <button class="gc c" onclick="genType('mixed')"><div class="gc-i">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
-      </div><div><span class="gc-l">Mixed</span><span class="gc-d">Random dot or plus</span></div></button>
-      <div id="gr">
-        <pre id="gt"></pre>
+<body>
+<div class="app">
+  <header class="hd">
+    <div class="hd-l">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg></div>
+      <div>
+        <div class="hd-t">Zeron Temp Mail</div>
+        <div class="hd-s" id="hdSub">Temp inbox</div>
       </div>
     </div>
-  </div>
+    <div class="hd-r">
+      <span class="prem" style="display:none" id="premBadge">PREMIUM</span>
+      <div class="av" id="av">Z</div>
+    </div>
+  </header>
+
+  <main style="padding:0 16px">
+    <section class="sc on" id="sc-home">
+      <div class="hero">
+        <h1 id="heroHi">Hello 👋</h1>
+        <p>Ek click e temp email banau — spam chhara, safe inbox.</p>
+        <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Your email is protected</span>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-i" style="background:var(--primary-bg);color:var(--primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
+          <div><div class="stat-n" id="statCount">0</div><div class="stat-l">Emails</div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-i" style="background:var(--accent-bg);color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div><div class="stat-n" id="statTime">0s</div><div class="stat-l">Update</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Quick Actions</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="btn btn-s" data-goto="generate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> New Email</button>
+          <button class="btn btn-s" data-goto="inbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg> Inbox</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2 id="lastTitle">Latest Inbox</h2>
+        <div id="homeInbox"></div>
+      </div>
+    </section>
+
+    <section class="sc" id="sc-inbox">
+      <div class="card">
+        <h2><span style="display:flex;align-items:center;gap:6px"><svg style="width:15px;height:15px;color:var(--primary)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m3 10h18M8 2v4M16 2v4"/></svg> Emails</span><button class="btn" id="refreshBtn" style="min-height:32px;padding:0;color:var(--primary)" title="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7M21 3v6h-6"/></svg></button></h2>
+        <div class="sr-b">
+          <input class="ib" id="searchInput" placeholder="Search emails..." />
+          <button class="btn btn-s btn-xs" onclick="doSearch()">Go</button>
+        </div>
+        <div class="ac" id="ac">
+          <button class="ac-i on" data-mail="cur"><span class="dot"></span>Current</button>
+        </div>
+        <div id="mailList"><div class="em" style="padding:26px 0"><div class="sp"></div><div style="margin-top:8px">Loading inbox...</div></div></div>
+      </div>
+    </section>
+
+    <section class="sc" id="sc-generate">
+      <div class="card">
+        <h2>Generate Email</h2>
+        <div class="ge">
+          <button class="gc" onclick="gen('dot')">
+            <span class="gc-i" style="background:linear-gradient(135deg,#0D9488,#0F766E)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7 0 0-7 7-7 7 7v7l-7 0z" transform="rotate(0 12 12)"/></svg></span>
+            <span><span class="gc-l">Name.Dot</span><span class="gc-d">name.suffix @ domain</span></span>
+          </button>
+          <button class="gc" onclick="gen('plus')">
+            <span class="gc-i" style="background:linear-gradient(135deg,#F97316,#EA580C)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+            <span><span class="gc-l">Plus</span><span class="gc-d">name+tag @ domain</span></span>
+          </button>
+          <button class="gc" onclick="gen('mixed')">
+            <span class="gc-i" style="background:linear-gradient(135deg,#6A5ACD,#9B59B6)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.7 3.4 3.8.6-2.7 2.7.6 3.8L12 15.4 8.6 13.5l.6-3.8-2.7-2.7 3.8-.6L12 3z"/></svg></span>
+            <span><span class="gc-l">Mixed</span><span class="gc-d">Random mix</span></span>
+          </button>
+          <button class="gc" onclick="gen('dotplus')">
+            <span class="gc-i" style="background:linear-gradient(135deg,#0F766E,#F97316)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+            <span><span class="gc-l">Dot Plus</span><span class="gc-d">Best of both</span></span>
+          </button>
+        </div>
+        <div class="result" id="gr">
+          <div class="result-t">Your new email</div>
+          <div class="result-e" id="grVal"></div>
+          <div class="rbtns">
+            <button class="btn btn-p" onclick="useGen()">Use this email</button>
+            <button class="btn btn-s" onclick="copy('res')">Copy</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>How it works</h2>
+        <div class="si"><div class="si-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Generate</div><div class="si-v">Instant temp address</div></div>
+        <div class="si"><div class="si-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Receive</div><div class="si-v">Auto-check mail</div></div>
+        <div class="si"><div class="si-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5M4 9h10a5 5 0 0 1 0 10h-1"/></svg> Delete</div><div class="si-v">One tap cleanup</div></div>
+      </div>
+    </section>
+
+    <section class="sc" id="sc-manage">
+      <div class="card">
+        <h2>Current Email</h2>
+        <div class="ib" id="curEmail" style="background:var(--card-2);border-color:var(--primary);font-weight:700"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-s btn-xs" onclick="copy('curEmail')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Set Custom Email</h2>
+        <div style="display:flex;gap:8px">
+          <input class="ib" id="customInput" placeholder="yourname@domain.com" />
+          <button class="btn btn-p" style="width:auto;padding:0 18px" onclick="setCustom()">Set</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Quick Plans</h2>
+        <div class="ge">
+          <button class="gc" onclick="genAndUse('dot')"><span class="gc-l">Dot</span></button>
+          <button class="gc" onclick="genAndUse('plus')"><span class="gc-l">Plus</span></button>
+          <button class="gc" onclick="genAndUse('mixed')"><span class="gc-l">Mixed</span></button>
+          <button class="gc" onclick="genAndUse('dotplus')"><span class="gc-l">Dot Plus</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="sc" id="sc-message">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <button class="btn btn-s btn-xs" onclick="backToList()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        </div>
+        <div id="mid-from" class="ms-s" style="font-size:16px;margin-bottom:2px"></div>
+        <div id="mid-sub" class="ms-f" style="font-size:13px;margin-bottom:4px"></div>
+        <div id="mid-date" class="ms-sn" style="font-weight:500;margin-bottom:14px"></div>
+        <div id="mid-body" style="font-size:14px;color:var(--text2);line-height:1.7;white-space:pre-wrap;word-break:break-word"></div>
+        <div style="display:flex;gap:8px;margin-top:16px">
+          <button class="btn btn-d btn-xs" id="delBtn">Delete email</button>
+          <button class="btn btn-s btn-xs" onclick="backToList()">Close</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="ts"></div>
+  <nav class="nav">
+    <button class="on" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>Home<span class="nind"></span></button>
+    <button data-tab="inbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>Inbox<span class="nind"></span></button>
+    <button data-tab="generate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Generate<span class="nind"></span></button>
+    <button data-tab="manage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="2"/><path d="M7 12h.01M11 12h.01"/></svg>Manage<span class="nind"></span></button>
+  </nav>
 </div>
-
-<!-- SETTINGS -->
-<div class="card" style="margin-top:-4px">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-    <h2 style="font-size:14px;font-weight:600">Account</h2>
-  </div>
-  <div class="sg">
-    <div class="si"><span class="si-l">User</span><span class="si-v" id="s-un">-</span></div>
-    <div class="si"><span class="si-l">Status</span><span class="si-v" id="s-st">-</span></div>
-    <div class="si"><span class="si-l">Tutorial</span><button class="btn btn-xs btn-s" onclick="showTut()">View</button></div>
-    <div class="si"><span class="si-l">Developer</span><button class="btn btn-xs btn-s" onclick="showDev()">Info</button></div>
-  </div>
-</div>
-
-</main>
-
-<!-- MODAL -->
-<div id="mo" class="h" role="dialog" aria-modal="true" aria-label="Detail modal">
-  <div id="mo-b">
-    <div id="mo-h"><span id="mo-t">Info</span><button id="mo-x" onclick="closeModal()" aria-label="Close dialog">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button></div>
-    <div id="mo-bd"></div>
-    <div id="mo-f"><button class="btn btn-xs btn-s" onclick="closeModal()">Close</button></div>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div id="ts" class="h" role="status" aria-live="polite" aria-atomic="true"></div>
-
 <script>
-const WA=window.Telegram?.WebApp
+(function(){
+"use strict";
+var tg=window.Telegram&&window.Telegram.WebApp;
+if(tg){tg.ready();try{tg.expand();}catch(e){}}
+var CT='cur',CURR='',MAILS=[],CURMAIL=null,SEARCH='';
+var PALETTE=['#0D9488','#F97316','#6A5ACD','#0F766E','#9B59B6','#EA580C'];
+function $(s){return document.querySelector(s);}
+function el(n,c,t){var e=document.createElement(n);if(c)e.className=c;if(t)e.textContent=t;return e;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){var M={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'};return M[m];});}
+function toast(msg,isErr){var t=$('#ts');if(!t)return;t.textContent=msg;t.classList.toggle('err',!!isErr);t.classList.add('show');clearTimeout(t._ts);t._ts=setTimeout(function(){t.classList.remove('show');},2600);if(tg&&tg.HapticFeedback&&tg.HapticFeedback.notificationChanged){try{tg.HapticFeedback.notificationChanged(isErr?'error':'success');}catch(e){}}}
+function haptic(k){if(tg&&tg.HapticFeedback&&tg.HapticFeedback[k]){try{tg.HapticFeedback[k]();}catch(e){}}}
+function copyText(t){if(!t){toast('Copy failed',1);return;}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){toast('Copied');},function(){fb(t);});}else{fb(t);}}
+function fb(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('Copied');}catch(e){toast('Copy failed',1);}document.body.removeChild(ta);}
+function copy(id){haptic('impactOccurred');var e=typeof id==='string'?document.getElementById(id):id;if(!e)return;var t;if(id==='res'||id==='curEmail'){t=e.textContent;}else{t=e.value||e.textContent;}copyText(String(t).trim());}
+function api(method,p1,p2){p1=p1||'';p2=p2||'';var url;
+if(method==='read'){url='/api/proxy?method=read&email='+encodeURIComponent(p1);}
+else if(method==='search'){url='/api/proxy?method=search&email='+encodeURIComponent(p1)+'&query='+encodeURIComponent(p2);}
+else if(method==='generate'){url='/api/proxy?method=generate&type='+encodeURIComponent(p1);}
+else if(method==='delete'){url='/api/proxy?method=delete&uid='+encodeURIComponent(p1);}
+else{return Promise.resolve({error:true,message:'unknown method',status:false});}
+var opts={method:'GET'};if(tg&&tg.initData)opts.headers={'X-Telegram-InitData':tg.initData};
+return fetch(url,opts).then(function(r){return r.json().catch(function(){return {status:false,message:'Bad response'};});})
+.then(function(j){if(j&&j.status===false&&j.message)throw new Error(j.message);return j;})
+.catch(function(err){if(err&&err.message)throw err;return {error:true,message:String(err),status:false};});}
 
-/* === STATE === */
-const S={aliases:JSON.parse(localStorage.getItem('tm_als')||'[]'),sel:null,msgs:[]}
+function save(){try{localStorage.setItem('zminiapp',JSON.stringify({curr:CURR,search:SEARCH}));}catch(e){}}
+function load(){try{var d=JSON.parse(localStorage.getItem('zminiapp')||'{}');CURR=d.curr||'';SEARCH=d.search||'';}catch(e){}}
+function statTime(){var d=new Date(),p=function(n){return n<10?'0'+n:n;};return p(d.getHours())+':'+p(d.getMinutes());}
+function statTimeRefresh(){var t=$('#statTime');if(t)t.textContent=statTime();}
+function setMail(v){CURR=v;save();haptic('success');toast('Email set: '+v);$('#curEmail').textContent=v;renderChips();loadInbox();}
+function isAddr(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+function useGen(){var v=$('#grVal').textContent.trim();if(!v)return;setMail(v);goto('manage');}
+function setCustom(){var v=$('#customInput').value.trim();if(!isAddr(v)){toast('Invalid email',1);haptic('notificationChanged');$('#customInput').classList.add('err');setTimeout(function(){$('#customInput').classList.remove('err');},1600);return;}setMail(v.toLowerCase());$('#customInput').value='';}
+function genAndUse(type){genPromise(type).then(function(addr){if(addr){setMail(addr);goto('manage');}});}
+function genPromise(type){return api('generate',type).then(function(j){if(j.error)throw new Error(j.message);return j.email;}).catch(function(err){toast(err.message||'Failed',1);return '';});}
+function gen(type){haptic('selectionChanged');$('#gr').style.display='block';var g=$('#grVal');if(!g)return;g.innerHTML='<span class="sp"></span>';api('generate',type).then(function(j){if(j.error){g.textContent='';toast(j.message,1);return;}g.textContent=j.email;haptic('success');}).catch(function(err){g.textContent='';toast(err.message||'Failed',1);});}
+function setActive(v){CURR=v;save();haptic('success');toast('Email: '+v);$('#curEmail').textContent=v;renderChips();loadInbox();}
+function renderChips(){var ac=$('#ac');if(!ac)return;var cur=CURR||$('#curEmail').textContent;var arr=[];if(SEARCH&&arr.indexOf(SEARCH)<0)arr.push(SEARCH);arr.push(cur);ac.innerHTML='';arr.forEach(function(a){var b=el('button');b.className='ac-i'+(SEARCH===a?' on':'');var dot=el('span');dot.className='dot';b.appendChild(dot);b.appendChild(document.createTextNode(esc(a)));b.onclick=function(){SEARCH=a;save();renderChips();loadInbox();};ac.appendChild(b);});}
+function loadInbox(){var wrap=$('#mailList');if(!wrap)return;wrap.innerHTML='<div class="em"><div class="sp"></div><div style="margin-top:8px">Loading inbox...</div></div>';var addr=SEARCH||CURR||$('#curEmail').textContent;if(!addr){wrap.innerHTML='<div class="em"><div class="em-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>No email set yet</div>';return;}var pr=addr===CURR?api('read',addr):api('search',addr,SEARCH);pr.then(function(j){renderList(j.data!==undefined?j.data:j);}).catch(function(err){wrap.innerHTML='<div class="em"><div class="em-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>'+esc(err.message||'Failed to load')+'</div>';});}
+function renderList(items){var wrap=$('#mailList');if(!wrap)return;items=Array.isArray(items)?items:[];statCount(items.length);if(!items.length){wrap.innerHTML='<div class="em"><div class="em-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg></div>No emails yet</div>';return;}wrap.innerHTML='';var seen={};items.forEach(function(m,i){if(!m||m.uid==null||seen[m.uid])return;seen[m.uid]=1;var nm=((m.from||'').split('<')[0]||'Unknown').trim();var ic=(nm.charAt(0)||'?').toUpperCase();var row=el('div');row.className='ms';row.innerHTML='<div class="ms-ic" style="background:'+PALETTE[i%PALETTE.length]+'">'+esc(ic)+'</div><div class="ms-b"><div class="ms-s">'+esc(nm)+'</div><div class="ms-f">'+esc(m.subject||'No subject')+'</div><div class="ms-sn">'+esc(m.snippet||m.body||'')+'</div></div><div class="ms-d">'+esc(m.date||'')+'</div>';row.onclick=function(){openMsg(m);};wrap.appendChild(row);});}
+function statCount(n){var s=$('#statCount');if(s)s.textContent=n||0;}
+function openMsg(m){CURMAIL=m;$('#mid-from').textContent=((m.from||'').split('<')[0]||'Unknown').trim();$('#mid-sub').textContent=m.subject||'(no subject)';$('#mid-date').textContent=(m.from||'')+(m.date?' • '+m.date:'');$('#mid-body').textContent=m.body||m.snippet||'(empty body)';show('sc-message');if(tg&&tg.BackButton){tg.BackButton.show();tg.BackButton.onClick(function(){backToList();});}statTimeRefresh();}
+function backToList(){if(tg&&tg.BackButton)tg.BackButton.hide();show('sc-inbox');}
+function delCurrent(){if(!CURMAIL||CURMAIL.uid==null){toast('Nothing to delete',1);return;}if(tg&&tg.showConfirm){tg.showConfirm('Delete this email?',function(ok){if(ok)doDel(CURMAIL.uid);});}else if(confirm('Delete this email?')){doDel(CURMAIL.uid);}}
+function doDel(uid){api('delete',uid).then(function(j){if(j.error)throw new Error(j.message);toast('Deleted');backToList();loadInbox();}).catch(function(err){toast(err.message||'Delete failed',1);});}
+function show(id){var all=document.querySelectorAll('.sc');for(var i=0;i<all.length;i++)all[i].classList.toggle('on',all[i].id===id);var tabs=document.querySelectorAll('.nav button');for(var j=0;j<tabs.length;j++)tabs[j].classList.toggle('on',('sc-'+tabs[j].getAttribute('data-tab'))===id);window.scrollTo(0,0);}
+function goto(name){show('sc-'+name);}
+function doSearch(){var v=$('#searchInput').value.trim();if(!v){toast('Type something',1);return;}SEARCH=v;save();renderChips();loadInbox();}
+function home(){var s=$('#heroHi');if(!s)return;var first='';try{first=(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user&&tg.initDataUnsafe.user.first_name)||'';}catch(e){}s.textContent='Hello'+(first?' '+first:'')+' 👋';}
+function init(){load();statTimeRefresh();var av=$('#av'),hd=$('#hdSub');try{var u=tg.initDataUnsafe.user;if(u){if(u.photo_url){var im=document.createElement('img');im.src=u.photo_url;im.alt='';av.innerHTML='';av.appendChild(im);}else{var ini=(u.first_name||'Z').charAt(0).toUpperCase();av.textContent=ini;}if(u.username)hd.textContent='@'+u.username;}}catch(e){}if(CURR)$('#curEmail').textContent=CURR;applyTheme();renderChips();loadInbox();home();}
+function applyTheme(){if(!(tg&&tg.colorScheme&&tg.themeParams))return;var p=tg.themeParams,bg=p.bg_color||'#F0FDFA',tx=p.text_color||'#134E4A',btn=p.button_color||'#0D9488',btnT=p.button_text_color||'#ffffff',hint=p.hint_color||'#94A3B8';var r=document.documentElement.style;if(tg.colorScheme==='dark'||isDark(bg)){r.setProperty('--bg',bg);r.setProperty('--text',tx);r.setProperty('--text2',tx);r.setProperty('--card','transparent');r.setProperty('--card-2',bg);r.setProperty('--line','rgba(255,255,255,.1)');r.setProperty('--primary',btn);r.setProperty('--primary-2',btn);r.setProperty('--primary-bg','rgba(13,148,136,.15)');r.setProperty('--text3',tx);r.setProperty('--hint',hint);r.setProperty('--accent-bg','rgba(249,115,22,.15)');r.setProperty('--red-bg','rgba(220,38,38,.15)');r.setProperty('--card-2',bg);var mc=document.querySelector('meta[name=theme-color]');if(mc)mc.setAttribute('content',bg);}else{r.setProperty('--bg',bg||'#F0FDFA');r.setProperty('--text',tx);r.setProperty('--hint',hint);}}
+function isDark(c){c=String(c||'').trim();if(c.indexOf('#rgba(')===0){var m=c.match(/rgba?\(([\d.]+),([\d.]+),([\d.]+)/);if(m)return(+m[1]+ +m[2]+ +m[3])/3<128;}if(c.charAt(0)==='#'){var h=c.slice(1);if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var n=parseInt(h,16);return(((n>>16)&255)+((n>>8)&255)+(n&255))/3<128;}return false;}
+var tabs=document.querySelectorAll('.nav button');for(var ti=0;ti<tabs.length;ti++)(function(b){b.onclick=function(){haptic('selectionChanged');goto(b.getAttribute('data-tab'));};})(tabs[ti]);
+document.querySelectorAll('[data-goto]').forEach(function(b){b.onclick=function(){haptic('selectionChanged');goto(b.getAttribute('data-goto'));};});
+var ri=$('#refreshBtn');if(ri)ri.onclick=function(){haptic('selectionChanged');loadInbox();};
+var si=$('#searchInput');if(si)si.onkeydown=function(e){if(e.key==='Enter')doSearch();};
+var di=$('#delBtn');if(di)di.onclick=function(){delCurrent();};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){backToList();}});
 
-/* === UTILS === */
-function esc(s){
-  if(s===null||s===undefined)return''
-  const d=document.createElement('div');d.textContent=String(s);return d.innerHTML
-}
-function toast(t,type){
-  const e=document.getElementById('ts')
-  e.textContent=t;e.classList.remove('h')
-  e.style.background=type==='err'?'var(--red)':'#134E4A'
-  clearTimeout(e._tm)
-  e._tm=setTimeout(()=>e.classList.add('h'),2500)
-}
-function saveAls(){
-  localStorage.setItem('tm_als',JSON.stringify(S.aliases))
-  renderAls()
-}
-function setLoading(btn,on){
-  if(!btn)return
-  if(on){btn.disabled=true;btn._orig=btn.innerHTML;btn.innerHTML='<span class="sp"></span> Working...'}
-  else{btn.disabled=false;btn.innerHTML=btn._orig||''}
-}
-
-/* === API === */
-async function api(m,p){
-  const qs=new URLSearchParams({method:m,...(p||{})}).toString()
-  try{
-    const r=await fetch('/api/proxy?'+qs)
-    if(!r.ok){
-      let e
-      try{e=await r.json()}catch{e={error:await r.text()}}
-      modal('Error',r.status+' — '+(e.error||e.message||JSON.stringify(e)))
-      return null
-    }
-    return await r.json()
-  }catch(e){modal('Network Error',e.message);return null}
-}
-
-/* === MODAL === */
-function modal(t,b,f){
-  document.getElementById('mo-t').textContent=t
-  document.getElementById('mo-bd').innerHTML=(typeof b==='string'?b.replace(/\n/g,'<br>'):'')
-  document.getElementById('mo-f').innerHTML=f||'<button class="btn btn-xs btn-s" onclick="closeModal()">Close</button>'
-  document.getElementById('mo').classList.remove('h')
-}
-function closeModal(){document.getElementById('mo').classList.add('h')}
-
-/* === TABS === */
-function swTab(el,n){
-  document.querySelectorAll('#tabs-sec .tb').forEach(b=>b.classList.remove('on'))
-  el.classList.add('on')
-  document.querySelectorAll('#tabs-sec .tv').forEach(v=>{v.classList.remove('on');v.classList.remove('fade-in')})
-  const target=document.getElementById('tv-'+n)
-  target.classList.add('on')
-  requestAnimationFrame(()=>target.classList.add('fade-in'))
-}
-
-/* === PROFILE === */
-function loadProfile(){
-  const u=WA?.initDataUnsafe?.user
-  if(!u) return
-  document.getElementById('s-un').textContent='@'+(u.username||u.first_name||'user')
-  document.getElementById('s-st').textContent=u.is_premium?'Premium':'Free'
-}
-
-/* === ALIAS MANAGEMENT === */
-function renderAls(){
-  const el=document.getElementById('ac')
-  const ts=document.getElementById('tabs-sec')
-  if(!S.aliases.length){
-    el.innerHTML='<div class="em" style="padding:8px 0">No aliases yet</div>'
-    ts.style.display='none';S.sel=null;return
-  }
-  el.innerHTML=S.aliases.map((a,i)=>{
-    const act=i===S.sel
-    return '<span class="ac-i'+(act?' act':'')+'" onclick="selectAl('+i+')"><span>'+(act?'&#9654; ':'')+esc(a)+'</span><button class="ac-x" onclick="event.stopPropagation();removeAl('+i+')">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button></span>'
-  }).join('')
-  if(S.sel!==null&&S.sel<S.aliases.length){
-    ts.style.display='block'
-    loadInbox()
-  }else ts.style.display='none'
-}
-
-function addAl(a){
-  if(S.aliases.includes(a)) return
-  S.aliases.push(a)
-  S.sel=S.aliases.length-1
-  saveAls()
-}
-function removeAl(i){
-  S.aliases.splice(i,1)
-  if(S.sel===i) S.sel=S.aliases.length?0:null
-  else if(S.sel>i) S.sel--
-  saveAls()
-}
-function selectAl(i){
-  S.sel=i;saveAls()
-  document.querySelector('[data-tab="inbox"]').click()
-  loadInbox()
-}
-
-/* === GENERATE === */
-async function gen(){
-  genType('mixed')
-}
-
-async function genType(k){
-  const gt=document.getElementById('gt')
-  const gr=document.getElementById('gr')
-  const btn=document.getElementById('btn-new-alias')
-  gt.textContent='';gr.style.display='block'
-  document.querySelectorAll('#tabs-sec .tb').forEach(b=>b.classList.remove('on'))
-  document.querySelector('[data-tab="gen"]').classList.add('on')
-  document.querySelectorAll('#tabs-sec .tv').forEach(v=>v.classList.remove('on'))
-  document.getElementById('tv-gen').classList.add('on')
-
-  setLoading(btn,true)
-  const d=await api('generate',{type:k})
-  setLoading(btn,false)
-  if(!d){gt.textContent='Generation failed';toast('Generation failed','err');return}
-  const email=d.data?.email||d.email||''
-  if(email){
-    gt.textContent=email
-    addAl(email)
-    toast('Alias created: '+email)
-    try{await navigator.clipboard.writeText(email)}catch{}
-  }else gt.textContent=JSON.stringify(d)
-}
-
-function checkManual(){
-  const inp=document.getElementById('manual-email')
-  const err=document.getElementById('manual-error')
-  const v=inp.value.trim()
-  if(!v||!v.includes('@')){err.textContent='Please enter a valid email address';err.classList.add('show');inp.classList.add('err');toast('Enter a valid email','err');return}
-  err.textContent='';err.classList.remove('show');inp.classList.remove('err')
-  addAl(v)
-  inp.value=''
-  selectAl(S.aliases.length-1)
-}
-
-/* === INBOX === */
-async function loadInbox(){
-  const el=document.getElementById('ix-l')
-  if(S.sel===null||!S.aliases[S.sel]){el.innerHTML='<div class="em">Select an alias</div>';return}
-  const email=S.aliases[S.sel]
-  el.innerHTML='<div class="em"><span class="sp"></span> Loading inbox...</div>'
-  const d=await api('read',{email})
-  if(!d){el.innerHTML='<div class="em" style="color:var(--red)">Failed to load inbox. Tap to retry.</div>';return}
-  S.msgs=d.data||[]
-  if(!S.msgs.length){el.innerHTML='<div class="em">No messages for '+esc(email)+'</div>';return}
-  el.innerHTML=S.msgs.map((m,i)=>'<div class="ms" onclick="viewMsg('+i+')" role="listitem" tabindex="0" aria-label="Message: '+esc(m.subject||'No subject')+'"><div class="ms-s">'+esc(m.subject||'(No subject)')+'</div><div class="ms-f">'+esc(m.from||'?')+'</div>'+(m.snippet?'<div class="ms-sn">'+esc(m.snippet)+'</div>':'')+'</div>').join('')
-}
-
-async function doSearch(){
-  const q=document.getElementById('sq').value.trim()
-  const el=document.getElementById('sl')
-  if(!q||S.sel===null||!S.aliases[S.sel]){el.innerHTML='<div class="em">Enter a search query</div>';return}
-  el.innerHTML='<div class="em"><span class="sp"></span> Searching...</div>'
-  const d=await api('search',{email:S.aliases[S.sel],query:q})
-  if(!d){el.innerHTML='<div class="em" style="color:var(--red)">Search failed. Tap to retry.</div>';return}
-  const ms=d.data||[]
-  window._sr=ms
-  if(!ms.length){el.innerHTML='<div class="em">No results found</div>';return}
-  el.innerHTML=ms.map((m,i)=>'<div class="ms" onclick="viewMsgSr('+i+')" role="listitem" tabindex="0" aria-label="Message: '+esc(m.subject||'No subject')+'"><div class="ms-s">'+esc(m.subject||'(No subject)')+'</div><div class="ms-f">'+esc(m.from||'?')+'</div></div>').join('')
-}
-function viewMsgSr(i){showMsg(window._sr[i])}
-function viewMsg(i){showMsg(S.msgs[i])}
-function viewMsgSr(i){showMsg(window._sr[i])}
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeModal()
-})
-
-function showMsg(m){
-  const body=m.body||'(No content)'
-  modal(esc(m.subject||'(No subject)'),
-    '<div style="margin-bottom:12px"><div style="font-size:12px;color:var(--text2);margin-bottom:2px"><strong style="color:var(--text)">From:</strong> '+esc(m.from||'?')+'</div><div style="font-size:12px;color:var(--text2);margin-bottom:2px"><strong style="color:var(--text)">To:</strong> '+esc(m.to||'?')+'</div><div style="font-size:12px;color:var(--text2)"><strong style="color:var(--text)">Date:</strong> '+esc(m.date||'?')+'</div></div><div style="border-top:1px solid var(--border);padding-top:14px"><pre style="font-family:inherit;font-size:14px;color:var(--text2);line-height:1.7;white-space:pre-wrap;word-break:break-word;margin:0">'+esc(body)+'</pre></div>',
-    '<button class="btn btn-xs btn-d" onclick="closeModal();delMsg(\''+esc(String(m.uid||'').replace(/'/g,"\\'"))+'\')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Delete</button> <button class="btn btn-xs btn-s" onclick="closeModal()">Close</button>')
-}
-
-async function delMsg(uid){
-  if(!uid){toast('No UID available','err');return}
-  if(!confirm('Move this message to Trash?')) return
-  const d=await api('delete',{uid})
-  if(d===true||d?.status===true||d?.raw==='true'){toast('Message deleted');closeModal()}
-  else toast('Delete failed','err')
-}
-
-/* === MENU === */
-function openMenu(){
-  modal('Tmap Gmail',
-    '<p style="color:var(--text);font-weight:600;margin-bottom:10px">Temp Gmail Mini App</p>'+
-    '<p style="font-size:13px">Powered by Gmail IMAP API. Generate dot/plus aliases, read inbox, search, and delete messages.</p>'+
-    '<p style="margin-top:12px;font-size:12px;color:var(--text3)">All aliases are disposable. Delete messages to keep inbox clean.</p>')
-}
-function showTut(){
-  modal('How to Use',
-    '<h3>Tmap Gmail Mini App</h3><p><strong>1. Generate</strong> — Tap "New Alias" or choose Dot/Plus/Dot+/Mixed to create a disposable Gmail alias. Auto-saved and copied.</p><p><strong>2. Read</strong> — Tap any saved alias to load its inbox. Tap a message to view full content.</p><p><strong>3. Search</strong> — Switch to Search tab and enter text to find specific messages.</p><p><strong>4. Delete</strong> — Open a message and tap Delete to move it to Trash.</p><p><strong>5. Manual</strong> — Type any email address and tap &#8250; to check its inbox.</p>')
-}
-function showDev(){
-  modal('Developer Info',
-    '<h3>Tmap Gmail v1.0</h3><p><strong>Creator</strong> @CodeDevZeron</p><p><strong>Design</strong> Clean flat, DM Sans typography, teal theme</p><p><strong>API</strong> Gmail IMAP via Vercel serverless</p><p><strong>Stack</strong> Flask + Python on Vercel</p>')
-}
-
-/* === INIT === */
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeModal()
-})
-
-WA?.ready()
-WA?.expand()
-loadProfile()
-renderAls()
-if(S.sel!==null&&S.aliases[S.sel]) loadInbox()
+init();
+})();
 </script>
 </body>
 </html>
